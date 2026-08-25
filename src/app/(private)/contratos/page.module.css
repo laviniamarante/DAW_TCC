@@ -1,0 +1,198 @@
+.mainContainer {
+    max-width: 1000px;
+    margin: 24px auto;
+    padding: 0 16px;
+}
+
+.pageTitle {
+    font-size: 1.5rem;
+    font-weight: 700;
+    margin-bottom: 16px;
+    color: #1a1a1a;
+}
+
+/* Card de Filtros */
+.filterCard {
+    background: #ffffff;
+    border: 1px solid #e0e0e0;
+    border-radius: 8px;
+    padding: 16px;
+    display: flex;
+    gap: 16px;
+    margin-bottom: 20px;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.02);
+}
+
+.searchGroup {
+    display: flex;
+    flex: 2;
+    gap: 8px;
+}
+
+.searchInputWrapper {
+    position: relative;
+    flex: 1;
+    display: flex;
+    align-items: center;
+}
+
+.searchIcon {
+    position: absolute;
+    left: 12px;
+    font-size: 18px;
+    color: #666;
+}
+
+.searchInputWrapper input {
+    width: 100%;
+    padding: 10px 12px 10px 38px;
+    background-color: #ededed;
+    border: 1px solid transparent;
+    border-radius: 6px;
+    font-size: 0.9rem;
+    outline: none;
+}
+
+.searchInputWrapper input:focus {
+    border-color: #006652;
+    background-color: #fff;
+}
+
+.searchBtn {
+    background-color: #006652;
+    color: #ffffff;
+    border: none;
+    padding: 0 18px;
+    border-radius: 6px;
+    font-weight: 600;
+    font-size: 0.9rem;
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    gap: 6px;
+    transition: background-color 0.2s;
+    white-space: nowrap;
+}
+
+.searchBtn:hover {
+    background-color: #004d3e;
+}
+
+.filterSelectWrapper {
+    position: relative;
+    flex: 1;
+    display: flex;
+    align-items: center;
+    background-color: #ededed;
+    border-radius: 6px;
+    padding: 0 12px;
+}
+
+.filterIcon {
+    font-size: 18px;
+    color: #333;
+    margin-right: 8px;
+}
+
+.arrowIcon {
+    position: absolute;
+    right: 12px;
+    pointer-events: none;
+    font-size: 14px;
+    color: #333;
+}
+
+.filterSelectWrapper select {
+    width: 100%;
+    padding: 10px 20px 10px 0;
+    background: transparent;
+    border: none;
+    font-size: 0.9rem;
+    color: #333;
+    appearance: none;
+    outline: none;
+    cursor: pointer;
+}
+
+/* Lista de Contratos e Cards */
+.contractsList {
+    display: flex;
+    flex-direction: column;
+    gap: 16px;
+}
+
+.contractCard {
+    background: #ffffff;
+    border: 1px solid #e0e0e0;
+    border-radius: 8px;
+    padding: 20px;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.02);
+}
+
+.contractTitle {
+    font-size: 1.1rem;
+    font-weight: 700;
+    color: #1a1a1a;
+    margin-bottom: 4px;
+}
+
+.contractSubtitle {
+    font-size: 0.95rem;
+    color: #555;
+    margin-bottom: 16px;
+}
+
+.contractDates {
+    display: flex;
+    gap: 32px;
+    margin-bottom: 12px;
+    color: #444;
+    font-size: 0.9rem;
+}
+
+.dateItem {
+    display: flex;
+    align-items: center;
+    gap: 6px;
+}
+
+.contractStatus {
+    display: flex;
+    align-items: center;
+    gap: 6px;
+    color: #444;
+    font-size: 0.9rem;
+    margin-bottom: 20px;
+}
+
+.detailsBtn {
+    width: 100%;
+    background-color: #006652;
+    color: #ffffff;
+    border: none;
+    padding: 10px;
+    border-radius: 6px;
+    font-weight: 600;
+    font-size: 0.95rem;
+    cursor: pointer;
+    transition: background-color 0.2s;
+}
+
+.detailsBtn:hover {
+    background-color: #004d3e;
+}
+
+@media (max-width: 600px) {
+    .filterCard {
+        flex-direction: column;
+    }
+
+    .searchGroup {
+        flex-direction: column;
+    }
+
+    .contractDates {
+        flex-direction: column;
+        gap: 8px;
+    }
+}

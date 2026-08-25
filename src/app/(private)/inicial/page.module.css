@@ -1,0 +1,178 @@
+.mainContainer {
+    max-width: 1000px;
+    margin: 24px auto;
+    padding: 0 16px;
+}
+
+.outerCard {
+    background: #ffffff;
+    border: 1px solid #e0e0e0;
+    border-radius: 12px;
+    padding: 24px;
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.05);
+}
+
+.headerRow {
+    display: flex;
+    justify-content: space-between;
+    align-items: flex-start;
+    margin-bottom: 24px;
+}
+
+.titleGroup h2 {
+    font-size: 1.4rem;
+    font-weight: 700;
+    color: #000000;
+    margin-bottom: 4px;
+}
+
+.titleGroup p {
+    font-size: 0.95rem;
+    color: #666666;
+}
+
+.newContractBtn {
+    background-color: #006652;
+    color: #ffffff;
+    border: none;
+    padding: 10px 18px;
+    border-radius: 6px;
+    font-weight: 600;
+    font-size: 0.9rem;
+    cursor: pointer;
+    transition: background-color 0.2s;
+    white-space: nowrap;
+}
+
+.newContractBtn:hover {
+    background-color: #004d3e;
+}
+
+/* Lista de Cards */
+.contractsList {
+    display: flex;
+    flex-direction: column;
+    gap: 16px;
+}
+
+.contractCard {
+    background: #ffffff;
+    border: 1px solid #e0e0e0;
+    border-radius: 8px;
+    padding: 16px 20px;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.02);
+    transition: border-color 0.2s;
+}
+
+.cardSelected {
+    border: 2px solid #0088ff;
+}
+
+.cardLeft {
+    display: flex;
+    flex-direction: column;
+    gap: 6px;
+}
+
+.titleHeader {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+}
+
+.contractTitle {
+    font-size: 1.05rem;
+    font-weight: 700;
+    color: #000000;
+}
+
+/* Badges de Status */
+.badge {
+    font-size: 0.75rem;
+    font-weight: 600;
+    padding: 3px 10px;
+    border-radius: 6px;
+    color: #ffffff;
+}
+
+.badgeVencido {
+    background-color: #dc2626;
+}
+
+.badgeAtivo {
+    background-color: #22c55e;
+}
+
+.badgeProximo {
+    background-color: #eab308;
+}
+
+.contractInfo {
+    font-size: 0.9rem;
+    color: #555555;
+    margin: 0;
+}
+
+/* Botão Ver Detalhes */
+.detailsBtn {
+    background-color: #e6f0ed;
+    color: #006652;
+    border: none;
+    padding: 8px 16px;
+    border-radius: 6px;
+    font-weight: 600;
+    font-size: 0.85rem;
+    cursor: pointer;
+    text-decoration: none;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    transition: all 0.2s;
+}
+
+.detailsBtn:hover {
+    background-color: #d1e3dd;
+}
+
+/* Link Ver Todos os Contratos */
+.viewAllWrapper {
+    margin-top: 24px;
+    padding-top: 16px;
+    border-top: 1px solid #f0f0f0;
+    display: flex;
+    justify-content: flex-end;
+}
+
+.viewAllLink {
+    display: inline-flex;
+    align-items: center;
+    gap: 8px;
+    color: #006652;
+    font-weight: 600;
+    font-size: 0.95rem;
+    text-decoration: none;
+}
+
+.viewAllLink:hover {
+    text-decoration: underline;
+}
+
+@media (max-width: 640px) {
+    .headerRow {
+        flex-direction: column;
+        gap: 16px;
+    }
+
+    .contractCard {
+        flex-direction: column;
+        align-items: flex-start;
+        gap: 16px;
+    }
+
+    .detailsBtn {
+        width: 100%;
+    }
+}

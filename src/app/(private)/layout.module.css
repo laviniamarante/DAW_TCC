@@ -1,0 +1,113 @@
+.header {
+    background-color: #006652;
+    color: #ffffff;
+    padding: 12px 24px;
+    width: 100%;
+}
+
+.headerContent {
+    display: flex;
+    align-items: center;
+    gap: 16px;
+    max-width: 1000px;
+    margin: 0 auto;
+}
+
+.menuBtn {
+    background: none;
+    border: none;
+    color: #ffffff;
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    padding: 0;
+}
+
+.logoContainer {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+}
+
+.logoText h1 {
+    font-size: 1.1rem;
+    font-weight: 700;
+    line-height: 1.1;
+    color: #ffffff;
+    margin: 0;
+}
+
+.logoText span {
+    font-size: 0.75rem;
+    opacity: 0.85;
+    color: #ffffff;
+}
+
+/* Menu Lateral (Drawer) */
+.overlay {
+    position: fixed;
+    inset: 0;
+    background: rgba(0, 0, 0, 0.4);
+    z-index: 90;
+}
+
+.drawer {
+    position: fixed;
+    top: 0;
+    left: -280px;
+    width: 280px;
+    height: 100%;
+    background: #ffffff;
+    z-index: 100;
+    box-shadow: 2px 0 8px rgba(0, 0, 0, 0.15);
+    transition: left 0.3s ease;
+    padding: 20px;
+}
+
+.drawerOpen {
+    left: 0;
+}
+
+.drawerHeader {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 24px;
+    border-bottom: 1px solid #eee;
+    padding-bottom: 12px;
+}
+
+.drawerHeader h2 {
+    font-size: 1.1rem;
+    color: #333;
+}
+
+.closeBtn {
+    background: none;
+    border: none;
+    cursor: pointer;
+    color: #666;
+}
+
+.navList {
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
+}
+
+.navItem {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    padding: 12px;
+    color: #333;
+    text-decoration: none;
+    font-weight: 500;
+    border-radius: 6px;
+    transition: background-color 0.2s;
+}
+
+.navItem:hover {
+    background-color: #f0f0f0;
+    color: #006652;
+}
