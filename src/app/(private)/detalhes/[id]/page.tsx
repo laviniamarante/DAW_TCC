@@ -36,7 +36,7 @@ export default function PaginaDetalhesContrato({ params }: PropsPagina) {
 
   return (
     <main className={styles.container}>
-  
+    
       <div className={styles.cabecalho}>
         <Link href="/contratos" className={styles.botaoVoltar}>
           <ArrowLeft size={20} /> Voltar para Contratos

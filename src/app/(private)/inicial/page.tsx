@@ -38,64 +38,65 @@ const CONTRATOS_RECENTES: ContratoRecente[] = [
     vencimento: "12/01/2026",
     status: "proximo",
     statusRotulo: "Próximo do vencimento",
-    selecionado: true,
+    
   },
 ];
 
 export default function PaginaInicial() {
-  const getBadgeClass = (status: ContratoRecente["status"]) => {
+  const obterClasseEtiqueta = (status: ContratoRecente["status"]) => {
     switch (status) {
       case "vencido":
-        return styles.badgeVencido;
+        return styles.etiquetaVencido;
       case "ativo":
-        return styles.badgeAtivo;
+        return styles.etiquetaAtivo;
       case "proximo":
-        return styles.badgeProximo;
+        return styles.etiquetaProximo;
     }
   };
 
   return (
-    <main className={styles.mainContainer}>
-      <div className={styles.outerCard}>
-        <div className={styles.headerRow}>
-          <div className={styles.titleGroup}>
-            <h2>Contratos recentes</h2>
-            <p>Últimos contratos cadastrados no sistema</p>
+    <main className={styles.conteinerPrincipal}>
+      <div className={styles.cartaoExterno}>
+        <div className={styles.linhaCabecalho}>
+          <div className={styles.grupoTitulo}>
+            <h2 className={styles.titulo}>Contratos recentes</h2>
+            <p className={styles.subtitulo}>
+              Últimos contratos cadastrados no sistema
+            </p>
           </div>
-          <button className={styles.newContractBtn}>+ Novo contrato</button>
+          <button className={styles.botaoNovoContrato}>+ Novo contrato</button>
         </div>
 
-        <div className={styles.contractsList}>
+        <div className={styles.listaContratos}>
           {CONTRATOS_RECENTES.map((contrato) => (
             <div
               key={contrato.id}
-              className={`${styles.contractCard} ${
-                contrato.selecionado ? styles.cardSelected : ""
+              className={`${styles.itemContrato} ${
+                contrato.selecionado ? styles.cartaoSelecionado : ""
               }`}
             >
-              <div className={styles.cardLeft}>
-                <div className={styles.titleHeader}>
-                  <h3 className={styles.contractTitle}>{contrato.titulo}</h3>
+              <div className={styles.cartaoEsquerda}>
+                <div className={styles.cabecalhoTitulo}>
+                  <h3 className={styles.tituloContrato}>{contrato.titulo}</h3>
                   <span
-                    className={`${styles.badge} ${getBadgeClass(
+                    className={`${styles.etiqueta} ${obterClasseEtiqueta(
                       contrato.status,
                     )}`}
                   >
                     {contrato.statusRotulo}
                   </span>
                 </div>
-                <p className={styles.contractInfo}>
-                  Fornecedor: {contrato.fornecedor}
+                <p className={styles.infoContrato}>
+                  <strong>Fornecedor:</strong> {contrato.fornecedor}
                 </p>
-                <p className={styles.contractInfo}>
-                  Vencimento: {contrato.vencimento}
+                <p className={styles.infoContrato}>
+                  <strong>Vencimento:</strong> {contrato.vencimento}
                 </p>
               </div>
 
-              {/* Redireciona para a tela de lista passando parâmetro de busca */}
               <Link
-                href={`/contratos?search=${encodeURIComponent(contrato.titulo)}`}
-                className={styles.detailsBtn}
+                href={`/contratos?busca=${encodeURIComponent(contrato.titulo)}`}
+                className={styles.botaoDetalhes}
               >
                 Ver detalhes
               </Link>
@@ -103,9 +104,8 @@ export default function PaginaInicial() {
           ))}
         </div>
 
-        {/* Link para ver a lista completa de contratos */}
-        <div className={styles.viewAllWrapper}>
-          <Link href="/contratos" className={styles.viewAllLink}>
+        <div className={styles.envoltorioVerTodos}>
+          <Link href="/contratos" className={styles.linkVerTodos}>
             Ver todos os contratos
             <ArrowRight size={16} />
           </Link>
