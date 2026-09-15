@@ -70,13 +70,13 @@ export default function ContratosPage() {
 
   return (
     <main className={styles.mainContainer}>
-      <h2 className={styles.pageTitle}>Contratos</h2>
+      <h2 className={styles.tituloPagina}>Contratos</h2>
 
       {/* Filtros */}
       <section className={styles.filterCard}>
         <form className={styles.searchGroup} onSubmit={handleSearch}>
           <div className={styles.searchInputWrapper}>
-            <MagnifyingGlass className={styles.searchIcon} />
+            <MagnifyingGlass className={styles.iconeBusca} />
             <input
               type="text"
               placeholder="Buscar por nome ou número do contrato..."

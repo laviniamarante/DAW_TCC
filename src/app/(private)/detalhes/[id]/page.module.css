@@ -4,6 +4,16 @@
     padding: 0 16px;
 }
 
+.cabecalho{
+    background-color: black;
+    padding: 2px;
+    font-size: 1rem;
+    font-weight: 100;
+    
+
+
+}
+
 .backBtn {
     display: inline-flex;
     width: 100%;

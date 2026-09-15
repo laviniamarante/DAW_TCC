@@ -4,14 +4,14 @@
     padding: 0 16px;
 }
 
-.pageTitle {
+.tituloPagina {
     font-size: 1.5rem;
     font-weight: 700;
     margin-bottom: 16px;
     color: #1a1a1a;
 }
 
-/* Card de Filtros */
+
 .filterCard {
     background: #ffffff;
     border: 1px solid #e0e0e0;
@@ -36,7 +36,7 @@
     align-items: center;
 }
 
-.searchIcon {
+.iconeBusca {
     position: absolute;
     left: 12px;
     font-size: 18px;
@@ -114,7 +114,7 @@
     cursor: pointer;
 }
 
-/* Lista de Contratos e Cards */
+/* lista ds Contratos e dos cards */
 .contractsList {
     display: flex;
     flex-direction: column;
