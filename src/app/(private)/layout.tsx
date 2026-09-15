@@ -29,7 +29,7 @@ export default function PrivateLayout({ children }: { children: ReactNode }) {
         </div>
       </header>
 
-      {/* Overlay e Drawer (Menu Lateral) */}
+      {}
       {isMenuOpen && (
         <div className={styles.overlay} onClick={() => setIsMenuOpen(false)} />
       )}
