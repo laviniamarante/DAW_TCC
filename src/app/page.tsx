@@ -6,6 +6,7 @@ import styles from "./page.module.css";
 import { RiLockPasswordLine } from "react-icons/ri";
 import { MdOutlineAttachEmail } from "react-icons/md";
 import { FaRegEyeSlash, FaRegEye } from "react-icons/fa";
+import Link from "next/link"
 
 export default function Home() {
   const [mostrarSenha, setMostrarSenha] = useState(false);
@@ -71,9 +72,9 @@ export default function Home() {
             <a href="#">Esqueci minha senha</a>
           </div>
 
-          <button type="submit" className={styles.loginButton}>
+          <Link href= "/inicial "type="submit" className={styles.loginButton}>
             Entrar
-          </button>
+          </Link>
         </form>
       </div>
     </main>

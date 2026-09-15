@@ -1,4 +1,4 @@
-.mainContainer {
+.containerPrincipal {
     max-width: 1000px;
     margin: 24px auto;
     padding: 0 16px;
@@ -11,8 +11,7 @@
     color: #1a1a1a;
 }
 
-
-.filterCard {
+.cartaoFiltros {
     background: #ffffff;
     border: 1px solid #e0e0e0;
     border-radius: 8px;
@@ -23,13 +22,13 @@
     box-shadow: 0 2px 4px rgba(0, 0, 0, 0.02);
 }
 
-.searchGroup {
+.grupoBusca {
     display: flex;
     flex: 2;
     gap: 8px;
 }
 
-.searchInputWrapper {
+.containerCampoBusca {
     position: relative;
     flex: 1;
     display: flex;
@@ -43,7 +42,7 @@
     color: #666;
 }
 
-.searchInputWrapper input {
+.containerCampoBusca input {
     width: 100%;
     padding: 10px 12px 10px 38px;
     background-color: #ededed;
@@ -53,12 +52,12 @@
     outline: none;
 }
 
-.searchInputWrapper input:focus {
+.containerCampoBusca input:focus {
     border-color: #006652;
     background-color: #fff;
 }
 
-.searchBtn {
+.botaoBusca {
     background-color: #006652;
     color: #ffffff;
     border: none;
@@ -74,11 +73,11 @@
     white-space: nowrap;
 }
 
-.searchBtn:hover {
+.botaoBusca:hover {
     background-color: #004d3e;
 }
 
-.filterSelectWrapper {
+.containerSelecaoFiltro {
     position: relative;
     flex: 1;
     display: flex;
@@ -88,13 +87,13 @@
     padding: 0 12px;
 }
 
-.filterIcon {
+.iconeFiltro {
     font-size: 18px;
     color: #333;
     margin-right: 8px;
 }
 
-.arrowIcon {
+.iconeSeta {
     position: absolute;
     right: 12px;
     pointer-events: none;
@@ -102,7 +101,7 @@
     color: #333;
 }
 
-.filterSelectWrapper select {
+.containerSelecaoFiltro select {
     width: 100%;
     padding: 10px 20px 10px 0;
     background: transparent;
@@ -114,14 +113,13 @@
     cursor: pointer;
 }
 
-/* lista ds Contratos e dos cards */
-.contractsList {
+.listaContratos {
     display: flex;
     flex-direction: column;
     gap: 16px;
 }
 
-.contractCard {
+.cartaoContrato {
     background: #ffffff;
     border: 1px solid #e0e0e0;
     border-radius: 8px;
@@ -129,20 +127,20 @@
     box-shadow: 0 2px 4px rgba(0, 0, 0, 0.02);
 }
 
-.contractTitle {
+.tituloContrato {
     font-size: 1.1rem;
     font-weight: 700;
     color: #1a1a1a;
     margin-bottom: 4px;
 }
 
-.contractSubtitle {
+.subtituloContrato {
     font-size: 0.95rem;
     color: #555;
     margin-bottom: 16px;
 }
 
-.contractDates {
+.datasContrato {
     display: flex;
     gap: 32px;
     margin-bottom: 12px;
@@ -150,13 +148,13 @@
     font-size: 0.9rem;
 }
 
-.dateItem {
+.itemData {
     display: flex;
     align-items: center;
     gap: 6px;
 }
 
-.contractStatus {
+.statusContrato {
     display: flex;
     align-items: center;
     gap: 6px;
@@ -165,7 +163,7 @@
     margin-bottom: 20px;
 }
 
-.detailsBtn {
+.botaoDetalhes {
     width: 100%;
     background-color: #006652;
     color: #ffffff;
@@ -178,21 +176,22 @@
     transition: background-color 0.2s;
 }
 
-.detailsBtn:hover {
+.botaoDetalhes:hover {
     background-color: #004d3e;
 }
 
 @media (max-width: 600px) {
-    .filterCard {
+    .cartaoFiltros {
         flex-direction: column;
     }
 
-    .searchGroup {
+    .grupoBusca {
         flex-direction: column;
     }
 
-    .contractDates {
+    .datasContrato {
         flex-direction: column;
         gap: 8px;
     }
 }
+

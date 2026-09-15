@@ -8,7 +8,7 @@ import {
   CalendarBlank,
   CurrencyDollar,
 } from "@phosphor-icons/react";
-import styles from "./page.module.css";
+import estilos from "./page.module.css";
 
 interface Contrato {
   id: number;
@@ -41,103 +41,107 @@ const CONTRATOS_MOCK: Contrato[] = [
   },
 ];
 
-export default function ContratosPage() {
-  const [inputValue, setInputValue] = useState("");
-  const [activeSearch, setActiveSearch] = useState("");
-  const [statusFilter, setStatusFilter] = useState("todos");
+export default function PaginaContratos() {
+  const [valorBusca, setValorBusca] = useState("");
+  const [buscaAtiva, setBuscaAtiva] = useState("");
+  const [filtroStatus, setFiltroStatus] = useState("todos");
 
-  
-  const handleSearch = (e?: FormEvent) => {
+  const realizarBusca = (e?: FormEvent) => {
     if (e) e.preventDefault();
-    setActiveSearch(inputValue);
+    setBuscaAtiva(valorBusca);
   };
 
   const contratosFiltrados = CONTRATOS_MOCK.filter((contrato) => {
-    const matchesSearch =
-      contrato.titulo.toLowerCase().includes(activeSearch.toLowerCase()) ||
-      contrato.empresa.toLowerCase().includes(activeSearch.toLowerCase()) ||
-      contrato.numero.toLowerCase().includes(activeSearch.toLowerCase());
+    const correspondeBusca =
+      contrato.titulo.toLowerCase().includes(buscaAtiva.toLowerCase()) ||
+      contrato.empresa.toLowerCase().includes(buscaAtiva.toLowerCase()) ||
+      contrato.numero.toLowerCase().includes(buscaAtiva.toLowerCase());
 
-    let matchesStatus = true;
-    if (statusFilter === "pendente") {
-      matchesStatus = contrato.pagamentosPendentes > 0;
-    } else if (statusFilter === "em_dia") {
-      matchesStatus = contrato.pagamentosPendentes === 0;
+    let correspondeStatus = true;
+
+    if (filtroStatus === "pendente") {
+      correspondeStatus = contrato.pagamentosPendentes > 0;
+    } else if (filtroStatus === "em_dia") {
+      correspondeStatus = contrato.pagamentosPendentes === 0;
     }
 
-    return matchesSearch && matchesStatus;
+    return correspondeBusca && correspondeStatus;
   });
 
   return (
-    <main className={styles.mainContainer}>
-      <h2 className={styles.tituloPagina}>Contratos</h2>
+    <main className={estilos.containerPrincipal}>
+      <h2 className={estilos.tituloPagina}>Contratos</h2>
 
-      {/* Filtros */}
-      <section className={styles.filterCard}>
-        <form className={styles.searchGroup} onSubmit={handleSearch}>
-          <div className={styles.searchInputWrapper}>
-            <MagnifyingGlass className={styles.iconeBusca} />
+      <section className={estilos.cartaoFiltros}>
+        <form className={estilos.grupoBusca} onSubmit={realizarBusca}>
+          <div className={estilos.containerCampoBusca}>
+            <MagnifyingGlass className={estilos.iconeBusca} />
             <input
               type="text"
               placeholder="Buscar por nome ou número do contrato..."
-              value={inputValue}
-              onChange={(e) => setInputValue(e.target.value)}
+              value={valorBusca}
+              onChange={(e) => setValorBusca(e.target.value)}
             />
           </div>
-          <button type="submit" className={styles.searchBtn}>
+
+          <button type="submit" className={estilos.botaoBusca}>
             <MagnifyingGlass size={16} />
             Buscar
           </button>
         </form>
 
-        <div className={styles.filterSelectWrapper}>
-          <Funnel className={styles.filterIcon} />
+        <div className={estilos.containerSelecaoFiltro}>
+          <Funnel className={estilos.iconeFiltro} />
+
           <select
-            value={statusFilter}
-            onChange={(e) => setStatusFilter(e.target.value)}
+            value={filtroStatus}
+            onChange={(e) => setFiltroStatus(e.target.value)}
           >
             <option value="todos">Todos os status</option>
             <option value="pendente">Com pagamentos pendentes</option>
             <option value="em_dia">Em dia</option>
           </select>
-          <CaretDown className={styles.arrowIcon} />
+
+          <CaretDown className={estilos.iconeSeta} />
         </div>
       </section>
 
-      {/* Lista */}
-      <section className={styles.contractsList}>
+    
+      <section className={estilos.listaContratos}>
         {contratosFiltrados.length === 0 ? (
           <p style={{ textAlign: "center", color: "#666", padding: "20px" }}>
             Nenhum contrato encontrado.
           </p>
         ) : (
           contratosFiltrados.map((contrato) => (
-            <div key={contrato.id} className={styles.contractCard}>
-              <h3 className={styles.contractTitle}>{contrato.titulo}</h3>
-              <p className={styles.contractSubtitle}>{contrato.empresa}</p>
+            <div key={contrato.id} className={estilos.cartaoContrato}>
+              <h3 className={estilos.tituloContrato}>{contrato.titulo}</h3>
+              <p className={estilos.subtituloContrato}>{contrato.empresa}</p>
 
-              <div className={styles.contractDates}>
-                <div className={styles.dateItem}>
+              <div className={estilos.datasContrato}>
+                <div className={estilos.itemData}>
                   <CalendarBlank size={18} />
                   <span>Início: {contrato.inicio}</span>
                 </div>
-                <div className={styles.dateItem}>
+
+                <div className={estilos.itemData}>
                   <CalendarBlank size={18} />
                   <span>Término: {contrato.termino}</span>
                 </div>
               </div>
 
-              <div className={styles.contractStatus}>
+              <div className={estilos.statusContrato}>
                 <CurrencyDollar size={18} />
+
                 <span>
                   {contrato.pagamentosPendentes > 0
                     ? `${contrato.pagamentosPendentes} pagamento(s) pendente(s)`
                     : "Pagamentos em dia"}
-                </span> /*opcional */
+                </span>
               </div>
 
               <button
-                className={styles.detailsBtn}
+                className={estilos.botaoDetalhes}
                 onClick={() => alert(`Detalhes do contrato ${contrato.id}`)}
               >
                 Ver detalhes
