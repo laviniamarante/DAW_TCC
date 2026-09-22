@@ -10,8 +10,9 @@ import styles from "./page.module.css";
 interface Contrato {
   id_contrato: number;
   identificador_contrato: string;
+  objeto_contrato: string | null;
+  data_inicio: string | null;
   data_fim: string | null;
-  data_celebracao: string | null;
 
   empresa: {
     razao_social: string;
@@ -34,39 +35,35 @@ export default function PaginaInicial() {
         .select(`
           id_contrato,
           identificador_contrato,
+          objeto_contrato,
+          data_inicio,
           data_fim,
-          data_celebracao,
           empresa (
+            id_empresa,
             razao_social,
             nome_fantasia
           ),
           situacao_contrato (
+            id_situacao_contrato,
             situacao
           )
         `)
-        .order("data_celebracao", { ascending: false })
-        .limit(3);
+        .order("id_contrato", { ascending: false })
+        .limit(5);
+        //aqui eu basicamente so to chamando os dados que eu quero la do supabase, coloquei em ordem do maior pro menor para que os contratos mais recentes apareçam antes, e que o limite seja 5, ja que eu só quero os 5 mais recentes
+        const contratos = (data || []) as unknown as Contrato[];
 
-      if (error) {
-        console.error("Erro ao buscar contratos recentes:", error);
+        setContratosRecentes(contratos);
         setCarregando(false);
-        return;
-      }
-
-      setContratosRecentes(
-        (data || []).map((contrato) => ({
-          ...contrato,
-          empresa: contrato.empresa?.[0] || null,
-          situacao_contrato: contrato.situacao_contrato?.[0] || null,
-        })),
-      );
-      setCarregando(false);
-    }
+        }
 
     buscarContratosRecentes();
   }, []);
 
-  const obterClasseEtiqueta = (situacao: string | undefined) => {
+  //aqui eu simplesmente vou definir a classe css a ser usada conforme a situação do contrato
+  const obterClasseEtiqueta = (
+    situacao: string | undefined,
+  ) => {
     switch (situacao?.toLowerCase()) {
       case "vencido":
         return styles.etiquetaVencido;
@@ -87,15 +84,18 @@ export default function PaginaInicial() {
       <main className={styles.conteinerPrincipal}>
         <div className={styles.linhaCabecalho}>
           <div className={styles.grupoTitulo}>
-            <h2 className={styles.titulo}>Contratos recentes</h2>
-            <p className={styles.subtitulo}>
-              Últimos contratos cadastrados no sistema
-            </p>
           </div>
         </div>
 
-        <p style={{ textAlign: "center", color: "#666", padding: "20px" }}>
+        <p
+          style={{
+            textAlign: "center",
+            color: "#666",
+            padding: "20px",
+          }}
+        >
           Carregando contratos...
+          {/* exibir essa mensagem enquanto os contratos estão sendo carregados */}
         </p>
       </main>
     );
@@ -105,7 +105,9 @@ export default function PaginaInicial() {
     <main className={styles.conteinerPrincipal}>
       <div className={styles.linhaCabecalho}>
         <div className={styles.grupoTitulo}>
-          <h2 className={styles.titulo}>Contratos recentes</h2>
+          <h2 className={styles.titulo}>
+            Contratos recentes
+          </h2>
 
           <p className={styles.subtitulo}>
             Últimos contratos cadastrados no sistema
@@ -118,61 +120,92 @@ export default function PaginaInicial() {
       </div>
 
       <div className={styles.listaContratos}>
-        {contratosRecentes.length === 0 ? (
-          <p style={{ textAlign: "center", color: "#666", padding: "20px" }}>
-            Nenhum contrato cadastrado.
+{contratosRecentes.map((contrato) => {
+    const situacao =
+      contrato.situacao_contrato?.situacao ||
+      "Não informado";
+
+    return (
+      <div
+        key={contrato.id_contrato}
+        className={styles.cartaoContrato}
+      >
+        <div className={styles.cartaoEsquerda}>
+
+<div className={styles.cabecalhoTitulo}>
+
+  <div className={styles.titulosContrato}>
+    <h3 className={styles.tituloContrato}>
+      {contrato.identificador_contrato}
+    </h3>
+
+    <h4 className={styles.nomeEmpresa}>
+      {contrato.empresa?.razao_social ||
+        "Não informado"}
+    </h4>
+  </div>
+
+  <span
+    className={`${styles.etiqueta} ${obterClasseEtiqueta(
+      situacao,
+    )}`}
+  >
+    {situacao}
+  </span>
+
+</div>
+
+          <p className={styles.infoContrato}>
+            <strong>Fornecedor:</strong>{" "}
+            {contrato.empresa?.nome_fantasia ||
+              contrato.empresa?.razao_social ||
+              "Não informado"}
           </p>
-        ) : (
-          contratosRecentes.map((contrato) => {
-            const situacao =
-              contrato.situacao_contrato?.situacao || "Não informado";
 
-            return (
-              <div
-                key={contrato.id_contrato}
-                className={styles.cartaoContrato}
-              >
-                <div className={styles.cartaoEsquerda}>
-                  <div className={styles.cabecalhoTitulo}>
-                    <h3 className={styles.tituloContrato}>
-                      {contrato.identificador_contrato}
-                    </h3>
+          <p className={styles.infoContrato}>
+            <strong>Objeto:</strong>{" "}
+            {contrato.objeto_contrato ||
+              "Não informado"}
+          </p>
 
-                    <span
-                      className={`${styles.etiqueta} ${obterClasseEtiqueta(
-                        situacao,
-                      )}`}
-                    >
-                      {situacao}
-                    </span>
-                  </div>
+          <p className={styles.infoContrato}>
+            <strong>Data de início:</strong>{" "}
+            {contrato.data_inicio
+              ? new Date(
+                  contrato.data_inicio,
+                ).toLocaleDateString("pt-BR")
+              : "Não informado"}
+          </p>
 
-                  <p className={styles.infoContrato}>
-                    <strong>Fornecedor:</strong>{" "}
-                    {contrato.empresa?.razao_social ||
-                      "Não informado"}
-                  </p>
+          <p className={styles.infoContrato}>
+            <strong>Data de fim:</strong>{" "}
+            {contrato.data_fim
+              ? new Date(
+                  contrato.data_fim,
+                ).toLocaleDateString("pt-BR")
+              : "Não informado"}
+          </p>
 
-                  <p className={styles.infoContrato}>
-                    <strong>Vencimento:</strong>{" "}
-                    {contrato.data_fim || "Não informado"}
-                  </p>
-                </div>
+        </div>
 
-                <Link
-                  href={`/detalhes/${contrato.id_contrato}`}
-                  className={styles.botaoDetalhes}
-                >
-                  Ver detalhes
-                </Link>
-              </div>
-            );
-          })
-        )}
+        <Link
+          href={`/detalhes/${contrato.id_contrato}`}
+          className={styles.botaoDetalhes}
+        >
+          Ver detalhes
+        </Link>
+
       </div>
+    );
+  })}
+
+</div>
 
       <div className={styles.envoltorioVerTodos}>
-        <Link href="/contratos" className={styles.linkVerTodos}>
+        <Link
+          href="/contratos"
+          className={styles.linkVerTodos}
+        >
           Ver todos os contratos
           <ArrowRightIcon size={16} />
         </Link>
