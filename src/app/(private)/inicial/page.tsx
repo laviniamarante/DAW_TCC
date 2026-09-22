@@ -2,48 +2,14 @@
 
 import Link from "next/link";
 import { ArrowRight } from "@phosphor-icons/react";
+import { CONTRATOS_MOCK, Contrato } from "@/db/contratosMock";
 import styles from "./page.module.css";
 
-interface ContratoRecente {
-  id: number;
-  titulo: string;
-  fornecedor: string;
-  vencimento: string;
-  status: "vencido" | "ativo" | "proximo";
-  statusRotulo: string;
-  selecionado?: boolean;
-}
-
-const CONTRATOS_RECENTES: ContratoRecente[] = [
-  {
-    id: 1,
-    titulo: "Fornecimento de Material de Escritório",
-    fornecedor: "Papelaria Central Ltda",
-    vencimento: "13/01/2026",
-    status: "vencido",
-    statusRotulo: "Vencido",
-  },
-  {
-    id: 2,
-    titulo: "Fornecimento de Equipamentos de Laboratório",
-    fornecedor: "Lab Equipamentos Científicos",
-    vencimento: "13/01/2026",
-    status: "ativo",
-    statusRotulo: "Ativo",
-  },
-  {
-    id: 3,
-    titulo: "Serviços de Limpeza e Conservação",
-    fornecedor: "Limpeza Total Serviços",
-    vencimento: "12/01/2026",
-    status: "proximo",
-    statusRotulo: "Próximo do vencimento",
-    
-  },
-];
-
 export default function PaginaInicial() {
-  const obterClasseEtiqueta = (status: ContratoRecente["status"]) => {
+  // mostra só os 3 primeiros contratos como "recentes"
+  const contratosRecentes = CONTRATOS_MOCK.slice(0, 3);
+
+  const obterClasseEtiqueta = (status: Contrato["status"]) => {
     switch (status) {
       case "vencido":
         return styles.etiquetaVencido;
@@ -68,16 +34,13 @@ export default function PaginaInicial() {
         </div>
 
         <div className={styles.listaContratos}>
-          {CONTRATOS_RECENTES.map((contrato) => (
-            <div
-              key={contrato.id}
-              className={`${styles.itemContrato} ${
-                contrato.selecionado ? styles.cartaoSelecionado : ""
-              }`}
-            >
+          {contratosRecentes.map((contrato) => (
+            <div key={contrato.id_contrato} className={styles.itemContrato}>
               <div className={styles.cartaoEsquerda}>
                 <div className={styles.cabecalhoTitulo}>
-                  <h3 className={styles.tituloContrato}>{contrato.titulo}</h3>
+                  <h3 className={styles.tituloContrato}>
+                    {contrato.nome_contrato}
+                  </h3>
                   <span
                     className={`${styles.etiqueta} ${obterClasseEtiqueta(
                       contrato.status,
@@ -87,15 +50,15 @@ export default function PaginaInicial() {
                   </span>
                 </div>
                 <p className={styles.infoContrato}>
-                  <strong>Fornecedor:</strong> {contrato.fornecedor}
+                  <strong>Fornecedor:</strong> {contrato.nome_contratada}
                 </p>
                 <p className={styles.infoContrato}>
-                  <strong>Vencimento:</strong> {contrato.vencimento}
+                  <strong>Vencimento:</strong> {contrato.data_final}
                 </p>
               </div>
 
               <Link
-                href={`/contratos?busca=${encodeURIComponent(contrato.titulo)}`}
+                href={`/detalhes/${contrato.id_contrato}`}
                 className={styles.botaoDetalhes}
               >
                 Ver detalhes

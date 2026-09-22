@@ -111,3 +111,18 @@
     background-color: #f0f0f0;
     color: #006652;
 }
+
+.divisor {
+    height: 1px;
+    background-color: #eee;
+    margin: 8px 4px;
+}
+
+.navItemSair {
+    color: #b91c1c;
+}
+
+.navItemSair:hover {
+    background-color: #fee2e2;
+    color: #b91c1c;
+}

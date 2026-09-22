@@ -1,6 +1,7 @@
 "use client";
 
 import { useState, FormEvent } from "react";
+import Link from "next/link";
 import {
   MagnifyingGlass,
   Funnel,
@@ -8,38 +9,8 @@ import {
   CalendarBlank,
   CurrencyDollar,
 } from "@phosphor-icons/react";
+import { CONTRATOS_MOCK } from "@/db/contratosMock";
 import estilos from "./page.module.css";
-
-interface Contrato {
-  id: number;
-  numero: string;
-  titulo: string;
-  empresa: string;
-  inicio: string;
-  termino: string;
-  pagamentosPendentes: number;
-}
-
-const CONTRATOS_MOCK: Contrato[] = [
-  {
-    id: 1,
-    numero: "01/2025",
-    titulo: "Fornecimento de Material de Escritório",
-    empresa: "Papelaria Central Ltda",
-    inicio: "14/01/2025",
-    termino: "30/05/2026",
-    pagamentosPendentes: 1,
-  },
-  {
-    id: 2,
-    numero: "02/2025",
-    titulo: "Serviços de Limpeza e Conservação",
-    empresa: "Limpeza Total Serviços",
-    inicio: "01/02/2025",
-    termino: "01/02/2026",
-    pagamentosPendentes: 0,
-  },
-];
 
 export default function PaginaContratos() {
   const [valorBusca, setValorBusca] = useState("");
@@ -53,9 +24,11 @@ export default function PaginaContratos() {
 
   const contratosFiltrados = CONTRATOS_MOCK.filter((contrato) => {
     const correspondeBusca =
-      contrato.titulo.toLowerCase().includes(buscaAtiva.toLowerCase()) ||
-      contrato.empresa.toLowerCase().includes(buscaAtiva.toLowerCase()) ||
-      contrato.numero.toLowerCase().includes(buscaAtiva.toLowerCase());
+      contrato.nome_contrato.toLowerCase().includes(buscaAtiva.toLowerCase()) ||
+      contrato.nome_contratada
+        .toLowerCase()
+        .includes(buscaAtiva.toLowerCase()) ||
+      contrato.numero_contrato.toLowerCase().includes(buscaAtiva.toLowerCase());
 
     let correspondeStatus = true;
 
@@ -106,7 +79,6 @@ export default function PaginaContratos() {
         </div>
       </section>
 
-    
       <section className={estilos.listaContratos}>
         {contratosFiltrados.length === 0 ? (
           <p style={{ textAlign: "center", color: "#666", padding: "20px" }}>
@@ -114,19 +86,23 @@ export default function PaginaContratos() {
           </p>
         ) : (
           contratosFiltrados.map((contrato) => (
-            <div key={contrato.id} className={estilos.cartaoContrato}>
-              <h3 className={estilos.tituloContrato}>{contrato.titulo}</h3>
-              <p className={estilos.subtituloContrato}>{contrato.empresa}</p>
+            <div key={contrato.id_contrato} className={estilos.cartaoContrato}>
+              <h3 className={estilos.tituloContrato}>
+                {contrato.nome_contrato}
+              </h3>
+              <p className={estilos.subtituloContrato}>
+                {contrato.nome_contratada}
+              </p>
 
               <div className={estilos.datasContrato}>
                 <div className={estilos.itemData}>
                   <CalendarBlank size={18} />
-                  <span>Início: {contrato.inicio}</span>
+                  <span>Início: {contrato.data_inicio}</span>
                 </div>
 
                 <div className={estilos.itemData}>
                   <CalendarBlank size={18} />
-                  <span>Término: {contrato.termino}</span>
+                  <span>Término: {contrato.data_final}</span>
                 </div>
               </div>
 
@@ -140,12 +116,12 @@ export default function PaginaContratos() {
                 </span>
               </div>
 
-              <button
+              <Link
+                href={`/detalhes/${contrato.id_contrato}`}
                 className={estilos.botaoDetalhes}
-                onClick={() => alert(`Detalhes do contrato ${contrato.id}`)}
               >
                 Ver detalhes
-              </button>
+              </Link>
             </div>
           ))
         )}

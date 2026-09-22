@@ -2,7 +2,18 @@
 
 import { ReactNode, useState } from "react";
 import Link from "next/link";
-import { List, FileText, X, House, Folders } from "@phosphor-icons/react";
+import {
+  List,
+  FileText,
+  X,
+  House,
+  Folders,
+  Bell,
+  UserCircle,
+  Users,
+  Gear,
+  SignOut,
+} from "@phosphor-icons/react";
 import styles from "./layout.module.css";
 
 export default function PrivateLayout({ children }: { children: ReactNode }) {
@@ -29,7 +40,6 @@ export default function PrivateLayout({ children }: { children: ReactNode }) {
         </div>
       </header>
 
-      {}
       {isMenuOpen && (
         <div className={styles.overlay} onClick={() => setIsMenuOpen(false)} />
       )}
@@ -48,7 +58,7 @@ export default function PrivateLayout({ children }: { children: ReactNode }) {
         </div>
         <nav className={styles.navList}>
           <Link
-            href="/pagInicial"
+            href="/inicial"
             className={styles.navItem}
             onClick={() => setIsMenuOpen(false)}
           >
@@ -56,12 +66,55 @@ export default function PrivateLayout({ children }: { children: ReactNode }) {
             Página Inicial
           </Link>
           <Link
+            href="/notificacoes"
+            className={styles.navItem}
+            onClick={() => setIsMenuOpen(false)}
+          >
+            <Bell size={20} />
+            Notificações
+          </Link>
+          <Link
             href="/contratos"
             className={styles.navItem}
             onClick={() => setIsMenuOpen(false)}
           >
             <Folders size={20} />
-            Todos os Contratos
+            Contratos
+          </Link>
+          <Link
+            href="/perfil"
+            className={styles.navItem}
+            onClick={() => setIsMenuOpen(false)}
+          >
+            <UserCircle size={20} />
+            Perfil
+          </Link>
+          <Link
+            href="/usuarios"
+            className={styles.navItem}
+            onClick={() => setIsMenuOpen(false)}
+          >
+            <Users size={20} />
+            Usuários
+          </Link>
+          <Link
+            href="/configuracoes"
+            className={styles.navItem}
+            onClick={() => setIsMenuOpen(false)}
+          >
+            <Gear size={20} />
+            Configurações
+          </Link>
+
+          <div className={styles.divisor} />
+
+          <Link
+            href="/"
+            className={`${styles.navItem} ${styles.navItemSair}`}
+            onClick={() => setIsMenuOpen(false)}
+          >
+            <SignOut size={20} />
+            Sair
           </Link>
         </nav>
       </aside>
