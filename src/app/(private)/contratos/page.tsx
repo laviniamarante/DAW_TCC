@@ -3,11 +3,11 @@
 import { useState, FormEvent } from "react";
 import Link from "next/link";
 import {
-  MagnifyingGlass,
-  Funnel,
-  CaretDown,
-  CalendarBlank,
-  CurrencyDollar,
+  MagnifyingGlassIcon,
+  FunnelIcon,
+  CaretDownIcon,
+  CalendarBlankIcon,
+  CurrencyDollarIcon,
 } from "@phosphor-icons/react";
 import { CONTRATOS_MOCK } from "@/db/contratosMock";
 import estilos from "./page.module.css";
@@ -17,7 +17,8 @@ export default function PaginaContratos() {
   const [buscaAtiva, setBuscaAtiva] = useState("");
   const [filtroStatus, setFiltroStatus] = useState("todos");
 
-  const realizarBusca = (e?: FormEvent) => {
+
+  const realizarBusca = (e?: SubmitEvent) => {
     if (e) e.preventDefault();
     setBuscaAtiva(valorBusca);
   };
@@ -48,7 +49,7 @@ export default function PaginaContratos() {
       <section className={estilos.cartaoFiltros}>
         <form className={estilos.grupoBusca} onSubmit={realizarBusca}>
           <div className={estilos.containerCampoBusca}>
-            <MagnifyingGlass className={estilos.iconeBusca} />
+            <MagnifyingGlassIcon className={estilos.iconeBusca} />
             <input
               type="text"
               placeholder="Buscar por nome ou número do contrato..."
@@ -58,13 +59,13 @@ export default function PaginaContratos() {
           </div>
 
           <button type="submit" className={estilos.botaoBusca}>
-            <MagnifyingGlass size={16} />
+            <MagnifyingGlassIcon size={16} />
             Buscar
           </button>
         </form>
 
         <div className={estilos.containerSelecaoFiltro}>
-          <Funnel className={estilos.iconeFiltro} />
+          <FunnelIcon className={estilos.iconeFiltro} />
 
           <select
             value={filtroStatus}
@@ -75,7 +76,7 @@ export default function PaginaContratos() {
             <option value="em_dia">Em dia</option>
           </select>
 
-          <CaretDown className={estilos.iconeSeta} />
+          <CaretDownIcon className={estilos.iconeSeta} />
         </div>
       </section>
 
@@ -96,18 +97,18 @@ export default function PaginaContratos() {
 
               <div className={estilos.datasContrato}>
                 <div className={estilos.itemData}>
-                  <CalendarBlank size={18} />
+                  <CalendarBlankIcon size={18} />
                   <span>Início: {contrato.data_inicio}</span>
                 </div>
 
                 <div className={estilos.itemData}>
-                  <CalendarBlank size={18} />
+                  <CalendarBlankIcon size={18} />
                   <span>Término: {contrato.data_final}</span>
                 </div>
               </div>
 
               <div className={estilos.statusContrato}>
-                <CurrencyDollar size={18} />
+                <CurrencyDollarIcon size={18} />
 
                 <span>
                   {contrato.pagamentosPendentes > 0

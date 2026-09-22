@@ -1,12 +1,11 @@
 "use client";
 
 import Link from "next/link";
-import { ArrowRight } from "@phosphor-icons/react";
+import { ArrowRightIcon } from "@phosphor-icons/react";
 import { CONTRATOS_MOCK, Contrato } from "@/db/contratosMock";
 import styles from "./page.module.css";
 
 export default function PaginaInicial() {
-  // mostra só os 3 primeiros contratos como "recentes"
   const contratosRecentes = CONTRATOS_MOCK.slice(0, 3);
 
   const obterClasseEtiqueta = (status: Contrato["status"]) => {
@@ -22,7 +21,7 @@ export default function PaginaInicial() {
 
   return (
     <main className={styles.conteinerPrincipal}>
-      <div className={styles.cartaoExterno}>
+     
         <div className={styles.linhaCabecalho}>
           <div className={styles.grupoTitulo}>
             <h2 className={styles.titulo}>Contratos recentes</h2>
@@ -35,7 +34,7 @@ export default function PaginaInicial() {
 
         <div className={styles.listaContratos}>
           {contratosRecentes.map((contrato) => (
-            <div key={contrato.id_contrato} className={styles.itemContrato}>
+            <div key={contrato.id_contrato} className={styles.cartaoContrato}>
               <div className={styles.cartaoEsquerda}>
                 <div className={styles.cabecalhoTitulo}>
                   <h3 className={styles.tituloContrato}>
@@ -70,10 +69,10 @@ export default function PaginaInicial() {
         <div className={styles.envoltorioVerTodos}>
           <Link href="/contratos" className={styles.linkVerTodos}>
             Ver todos os contratos
-            <ArrowRight size={16} />
+            <ArrowRightIcon size={16} />
           </Link>
         </div>
-      </div>
+     
     </main>
   );
 }

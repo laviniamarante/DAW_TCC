@@ -3,12 +3,12 @@
 import React from "react";
 import Link from "next/link";
 import {
-  ArrowLeft,
-  FileText,
-  CurrencyDollar,
-  User,
-  Briefcase,
-  Link as LinkIcon,
+  ArrowLeftIcon,
+  FileTextIcon,
+  CurrencyDollarIcon,
+  UserIcon,
+  BriefcaseIcon,
+  LinkIcon,
 } from "@phosphor-icons/react";
 import { CONTRATOS_MOCK } from "@/db/contratosMock";
 import styles from "./page.module.css";
@@ -37,7 +37,7 @@ export default function PaginaDetalhesContrato({ params }: PropsPagina) {
     <main className={styles.container}>
       <div className={styles.cabecalho}>
         <Link href="/contratos" className={styles.botaoVoltar}>
-          <ArrowLeft size={20} /> Voltar para Contratos
+          <ArrowLeftIcon size={20} /> Voltar para Contratos
         </Link>
         <div className={styles.areaTitulo}>
           <h2>Detalhes do Contrato #{contrato.id_contrato}</h2>
@@ -48,7 +48,7 @@ export default function PaginaDetalhesContrato({ params }: PropsPagina) {
       <div className={styles.gradeCartoes}>
         <section className={`${styles.cartao} ${styles.larguraTotal}`}>
           <div className={styles.cabecalhoCartao}>
-            <FileText size={20} />
+            <FileTextIcon size={20} />
             <h3>Objeto do Contrato</h3>
           </div>
           <div className={styles.campoUnico}>
@@ -58,7 +58,7 @@ export default function PaginaDetalhesContrato({ params }: PropsPagina) {
 
         <section className={styles.cartao}>
           <div className={styles.cabecalhoCartao}>
-            <Briefcase size={20} />
+            <BriefcaseIcon size={20} />
             <h3>Informações Gerais e Vigência</h3>
           </div>
           <div className={styles.grupoCampos}>
@@ -95,7 +95,7 @@ export default function PaginaDetalhesContrato({ params }: PropsPagina) {
 
         <section className={styles.cartao}>
           <div className={styles.cabecalhoCartao}>
-            <CurrencyDollar size={20} />
+            <CurrencyDollarIcon size={20} />
             <h3>Financeiro e Orçamento</h3>
           </div>
           <div className={styles.grupoCampos}>
@@ -136,7 +136,7 @@ export default function PaginaDetalhesContrato({ params }: PropsPagina) {
 
         <section className={styles.cartao}>
           <div className={styles.cabecalhoCartao}>
-            <User size={20} />
+            <UserIcon size={20} />
             <h3>Equipe de Gestão e Fiscalização</h3>
           </div>
           <div className={styles.grupoCampos}>
@@ -161,7 +161,7 @@ export default function PaginaDetalhesContrato({ params }: PropsPagina) {
 
         <section className={styles.cartao}>
           <div className={styles.cabecalhoCartao}>
-            <User size={20} />
+            <UserIcon size={20} />
             <h3>Representante e Contato</h3>
           </div>
           <div className={styles.grupoCampos}>

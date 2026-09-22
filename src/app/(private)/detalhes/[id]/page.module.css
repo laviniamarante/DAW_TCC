@@ -5,7 +5,6 @@
 }
 
 .cabecalho{
-    background-color: black;
     padding: 2px;
     font-size: 1rem;
     
@@ -32,7 +31,6 @@
 }
 
 .campo {
-    background-color: black;
     align-items: center;
     margin: 0 15px;
     width: 100%;
