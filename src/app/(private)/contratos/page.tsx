@@ -227,7 +227,7 @@ export default function PaginaContratos() {
               </div>
 
               <div className={styles.statusContrato}>
-                <CurrencyDollarIcon size={18} />
+                
 
                 <span>
                   Status:{" "}
