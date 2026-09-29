@@ -1,38 +1,156 @@
-.container{
+.container {
     max-width: 1000px;
     margin: 24px auto;
     padding: 0 16px;
 }
-
-.cabecalho{
+.cabecalho {
     padding: 2px;
     font-size: 1rem;
-    
-
-
 }
 
 .backBtn {
     display: inline-flex;
-    width: 100%;
+    align-items: center;
+    gap: 8px;
     background-color: #006652;
-    padding: 10px;
+    color: white;
+    padding: 10px 14px;
     border-radius: 6px;
     font-weight: 600;
     font-size: 0.95rem;
     cursor: pointer;
-    transition: background-color 0.2s;
-    align-items: center;
-    gap: 8px;
-    color: #006652;
     text-decoration: none;
     margin-bottom: 16px;
     transition: opacity 0.2s;
 }
 
-.campo {
-    align-items: center;
-    margin: 0 15px;
+.backBtn:hover {
+    opacity: 0.9;
+}
+.gradeCartoes {
+    display: flex;
+    flex-direction: column;
+    gap: 14px;
+}
+
+.cartao {
     width: 100%;
-    padding: 5px;
+    background-color: #f8f8f8;
+    border: 1px solid #e5e5e5;
+    border-radius: 10px;
+    padding: 20px;
+    box-sizing: border-box;
+}
+
+
+.larguraTotal {
+    width: 100%;
+}
+
+.cabecalhoCartao {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    margin-bottom: 18px;
+    color: #006c5b;
+}
+
+.cabecalhoCartao h3 {
+    margin: 0;
+    font-size: 1rem;
+    font-weight: 700;
+}
+
+.grupoCampos {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 18px 24px;
+    padding: 4px 0;
+}
+
+
+.campo {
+    display: flex;
+    flex-direction: column;
+
+    width: 100%;
+
+    margin: 0;
+    padding: 0;
+
+    box-sizing: border-box;
+}
+
+
+
+.campo label {
+    display: block;
+
+    font-size: 0.78rem;
+
+    color: #666;
+
+    margin-bottom: 6px;
+}
+
+
+.campo input,
+.campo textarea {
+    width: 100%;
+
+    box-sizing: border-box;
+
+    background-color: white;
+
+    border: 1px solid #dcdcdc;
+    border-radius: 5px;
+
+    padding: 9px 10px;
+
+    font-size: 0.9rem;
+
+    color: #222;
+
+    outline: none;
+}
+
+
+/* INPUT QUANDO CLICADO */
+
+.campo input:focus,
+.campo textarea:focus {
+    border-color: #006c5b;
+}
+
+
+/* TEXTAREA */
+
+.campo textarea {
+    min-height: 80px;
+    resize: vertical;
+}
+
+
+/* CAMPO QUE OCUPA A LINHA TODA */
+
+.linhaInteira {
+    grid-column: 1 / -1;
+}
+
+
+.campoUnico {
+    width: 100%;
+}
+
+
+@media (max-width: 700px) {
+
+    .grupoCampos {
+        grid-template-columns: 1fr;
+        gap: 14px;
+    }
+
+    .cartao {
+        padding: 16px;
+    }
 }

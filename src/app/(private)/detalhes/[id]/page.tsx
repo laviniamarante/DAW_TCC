@@ -22,9 +22,9 @@ interface Contrato {
   data_inicio: string | null;
   data_fim: string | null;
   prorrogavel: boolean | null;
+  prazo_restante: number | null;
 
   numero_processo_celebracao: string | null;
-  prazo_restante: number | null;
   nota_empenho: string | null;
   natureza_contrato: string | null;
   portaria_fiscalizacao: string | null;
@@ -64,6 +64,10 @@ interface Contrato {
   empresa: {
     razao_social: string;
     nome_fantasia: string | null;
+    cnpj: string | null;
+    email: string | null;
+    telefone: string | null;
+    endereco: string | null;
   } | null;
 
   categoria: {
@@ -79,10 +83,84 @@ interface Contrato {
   situacao_contrato: {
     situacao: string;
   } | null;
+
+  prorrogacao: {
+    id_prorrogacao: number;
+    novo_prazo: number | null;
+    novo_valor: number | null;
+  }[] | null;
+
+  pagamento: {
+    id_pagamento: number;
+    descricao: string | null;
+    valor_pago: number | null;
+  }[] | null;
+
+  notificacao: {
+    id_notificacao: number;
+    titulo: string | null;
+    descricao: string | null;
+    tempo_envio: number | null;
+    data_criacao: string | null;
+    tipo_notificacao: {
+      tipo: string;
+    } | null;
+  }[] | null;
 }
 
 interface PropsPagina {
   params: Promise<{ id: string }>;
+}
+
+/* CAMPO REUTILIZÁVEL */
+function Campo({
+  label,
+  value,
+  type = "text",
+}: {
+  label: string;
+  value: string | number | boolean | null | undefined;
+  type?: string;
+}) {
+  return (
+    <div className={styles.campo}>
+      <label>{label}</label>
+
+
+      <input
+        type={type}
+        defaultValue={value == null ? "" : String(value)}
+      />
+    </div>
+  );
+}
+
+/* CARD REUTILIZÁVEL */
+function Cartao({
+  titulo,
+  icone,
+  children,
+  larguraTotal = false,
+}: {
+  titulo: string;
+  icone: React.ReactNode;
+  children: React.ReactNode;
+  larguraTotal?: boolean;
+}) {
+  return (
+    <section
+      className={`${styles.cartao} ${
+        larguraTotal ? styles.larguraTotal : ""
+      }`}
+    >
+      <div className={styles.cabecalhoCartao}>
+        {icone}
+        <h3>{titulo}</h3>
+      </div>
+
+      {children}
+    </section>
+  );
 }
 
 export default function PaginaDetalhesContrato({
@@ -101,7 +179,11 @@ export default function PaginaDetalhesContrato({
           *,
           empresa (
             razao_social,
-            nome_fantasia
+            nome_fantasia,
+            cnpj,
+            email,
+            telefone,
+            endereco
           ),
           categoria (
             nome
@@ -113,6 +195,26 @@ export default function PaginaDetalhesContrato({
           ),
           situacao_contrato (
             situacao
+          ),
+          prorrogacao (
+            id_prorrogacao,
+            novo_prazo,
+            novo_valor
+          ),
+          pagamento (
+            id_pagamento,
+            descricao,
+            valor_pago
+          ),
+          notificacao (
+            id_notificacao,
+            titulo,
+            descricao,
+            tempo_envio,
+            data_criacao,
+            tipo_notificacao (
+              tipo
+            )
           )
         `)
         .eq("id_contrato", Number(id))
@@ -165,377 +267,424 @@ export default function PaginaDetalhesContrato({
           <h2>
             Detalhes do Contrato #{contrato.identificador_contrato}
           </h2>
-
-          <span className={styles.tagStatus}>
-            {contrato.situacao_contrato?.situacao ||
-              contrato.situacao_gov ||
-              "Não informado"}
-          </span>
         </div>
       </div>
 
       <div className={styles.gradeCartoes}>
 
-        {/* OBJETO DO CONTRATO */}
-        <section
-          className={`${styles.cartao} ${styles.larguraTotal}`}
+        {/* 1. IDENTIFICAÇÃO DO CONTRATO */}
+        <Cartao
+          titulo="Identificação do Contrato"
+          icone={<FileTextIcon size={20} />}
+          larguraTotal
         >
-          <div className={styles.cabecalhoCartao}>
-            <FileTextIcon size={20} />
-            <h3>Objeto do Contrato</h3>
-          </div>
+          <div className={styles.grupoCampos}>
+            <Campo
+              label="Objeto do Contrato"
+              value={contrato.objeto_contrato}
+            />
 
-          <div className={styles.campoUnico}>
-            <textarea
-              value={contrato.objeto_contrato ?? ""}
-              readOnly
-              rows={3}
+            <Campo
+              label="Identificador do Contrato"
+              value={contrato.identificador_contrato}
+            />
+
+            <Campo
+              label="Vigência"
+              value={contrato.vigencia}
+            />
+
+            <Campo
+              label="Data de Início"
+              value={contrato.data_inicio}
+            />
+
+            <Campo
+              label="Data de Fim"
+              value={contrato.data_fim}
+            />
+
+            <Campo
+              label="Prorrogável"
+              value={
+                contrato.prorrogavel === null
+                  ? ""
+                  : contrato.prorrogavel
+                    ? "Sim"
+                    : "Não"
+              }
+            />
+
+            <Campo
+              label="Prazo Restante"
+              value={contrato.prazo_restante}
+            />
+
+            <Campo
+              label="Data de Celebração"
+              value={contrato.data_celebracao}
+            />
+
+            <Campo
+              label="Representante Legal"
+              value={contrato.representante_legal}
             />
           </div>
-        </section>
+        </Cartao>
 
-        {/* INFORMAÇÕES GERAIS */}
-        <section className={styles.cartao}>
-          <div className={styles.cabecalhoCartao}>
-            <BriefcaseIcon size={20} />
-            <h3>Informações Gerais e Vigência</h3>
-          </div>
-
-          <div className={styles.grupoCampos}>
-
-            <div className={styles.campo}>
-              <label>Natureza do Contrato</label>
-              <input
-                type="text"
-                value={contrato.natureza_contrato ?? ""}
-                readOnly
-              />
-            </div>
-
-            <div className={styles.campo}>
-              <label>Data de Início</label>
-              <input
-                type="text"
-                value={contrato.data_inicio ?? ""}
-                readOnly
-              />
-            </div>
-
-            <div className={styles.campo}>
-              <label>Vigência</label>
-              <input
-                type="text"
-                value={contrato.vigencia ?? ""}
-                readOnly
-              />
-            </div>
-
-            <div className={styles.campo}>
-              <label>Prazo Restante</label>
-              <input
-                type="text"
-                value={contrato.prazo_restante ?? ""}
-                readOnly
-              />
-            </div>
-
-            <div className={styles.campo}>
-              <label>Data de Celebração</label>
-              <input
-                type="text"
-                value={contrato.data_celebracao ?? ""}
-                readOnly
-              />
-            </div>
-
-            <div className={styles.campo}>
-              <label>Portaria de Fiscalização</label>
-              <input
-                type="text"
-                value={contrato.portaria_fiscalizacao ?? ""}
-                readOnly
-              />
-            </div>
-
-          </div>
-        </section>
-
-        {/* FINANCEIRO */}
-        <section className={styles.cartao}>
-          <div className={styles.cabecalhoCartao}>
-            <CurrencyDollarIcon size={20} />
-            <h3>Financeiro e Orçamento</h3>
-          </div>
-
-          <div className={styles.grupoCampos}>
-
-            <div className={styles.campo}>
-              <label>Valor Global</label>
-              <input
-                type="text"
-                value={contrato.valor_global ?? ""}
-                readOnly
-              />
-            </div>
-
-            <div className={styles.campo}>
-              <label>Valor Mensal</label>
-              <input
-                type="text"
-                value={contrato.valor_mensal ?? ""}
-                readOnly
-              />
-            </div>
-
-            <div className={styles.campo}>
-              <label>Nota de Empenho</label>
-              <input
-                type="text"
-                value={contrato.nota_empenho ?? ""}
-                readOnly
-              />
-            </div>
-
-            <div className={styles.campo}>
-              <label>Fonte de Recurso</label>
-              <input
-                type="text"
-                value={contrato.fonte_recurso ?? ""}
-                readOnly
-              />
-            </div>
-
-            <div className={styles.campo}>
-              <label>Natureza da Despesa</label>
-              <input
-                type="text"
-                value={contrato.natureza_despesa ?? ""}
-                readOnly
-              />
-            </div>
-
-            <div className={styles.campo}>
-              <label>Conta Vinculada</label>
-              <input
-                type="text"
-                value={contrato.conta_vinculada ?? ""}
-                readOnly
-              />
-            </div>
-
-            <div className={styles.campo}>
-              <label>Plano Interno</label>
-              <input
-                type="text"
-                value={contrato.plano_interno ?? ""}
-                readOnly
-              />
-            </div>
-
-            <div className={styles.campo}>
-              <label>Programa de Trabalho</label>
-              <input
-                type="text"
-                value={contrato.programa_trabalho ?? ""}
-                readOnly
-              />
-            </div>
-
-          </div>
-        </section>
-
-        {/* EQUIPE */}
-        <section className={styles.cartao}>
-          <div className={styles.cabecalhoCartao}>
-            <UserIcon size={20} />
-            <h3>Equipe de Gestão e Fiscalização</h3>
-          </div>
-
-          <div className={styles.grupoCampos}>
-
-            <div className={styles.campo}>
-              <label>Gestor Titular</label>
-              <input
-                type="text"
-                value={contrato.gestor_titular ?? ""}
-                readOnly
-              />
-            </div>
-
-            <div className={styles.campo}>
-              <label>Gestor Substituto</label>
-              <input
-                type="text"
-                value={contrato.gestor_substituto ?? ""}
-                readOnly
-              />
-            </div>
-
-            <div className={styles.campo}>
-              <label>Fiscal Titular</label>
-              <input
-                type="text"
-                value={contrato.fiscal_titular ?? ""}
-                readOnly
-              />
-            </div>
-
-            <div className={styles.campo}>
-              <label>Fiscal Substituto</label>
-              <input
-                type="text"
-                value={contrato.fiscal_substituto ?? ""}
-                readOnly
-              />
-            </div>
-
-          </div>
-        </section>
-
-        {/* REPRESENTANTE */}
-        <section className={styles.cartao}>
-          <div className={styles.cabecalhoCartao}>
-            <UserIcon size={20} />
-            <h3>Representante e Contato</h3>
-          </div>
-
-          <div className={styles.grupoCampos}>
-
-            <div className={styles.campo}>
-              <label>Representante Legal</label>
-              <input
-                type="text"
-                value={contrato.representante_legal ?? ""}
-                readOnly
-              />
-            </div>
-
-            <div className={styles.campo}>
-              <label>CPF do Representante</label>
-              <input
-                type="text"
-                value={contrato.cpf_representante ?? ""}
-                readOnly
-              />
-            </div>
-
-            <div className={styles.campo}>
-              <label>RG do Representante</label>
-              <input
-                type="text"
-                value={contrato.rg_representante ?? ""}
-                readOnly
-              />
-            </div>
-
-            <div className={styles.campo}>
-              <label>E-mail de Contato</label>
-              <input
-                type="text"
-                value={contrato.email_contato ?? ""}
-                readOnly
-              />
-            </div>
-
-            <div
-              className={`${styles.campo} ${styles.linhaInteira}`}
-            >
-              <label>Endereço Postal</label>
-              <input
-                type="text"
-                value={contrato.endereco_postal ?? ""}
-                readOnly
-              />
-            </div>
-
-          </div>
-        </section>
-
-        {/* LICITAÇÃO, PROCESSOS E LINKS */}
-        <section
-          className={`${styles.cartao} ${styles.larguraTotal}`}
+        {/* 2. EMPRESA */}
+        <Cartao
+          titulo="Empresa"
+          icone={<BriefcaseIcon size={20} />}
         >
-          <div className={styles.cabecalhoCartao}>
-            <LinkIcon size={20} />
-            <h3>Licitação, Processos e Links</h3>
+          <div className={styles.grupoCampos}>
+            <Campo
+              label="Razão Social"
+              value={contrato.empresa?.razao_social}
+            />
+
+            <Campo
+              label="Nome Fantasia"
+              value={contrato.empresa?.nome_fantasia}
+            />
+
+            <Campo
+              label="CNPJ"
+              value={contrato.empresa?.cnpj}
+            />
+
+            <Campo
+              label="E-mail"
+              value={contrato.empresa?.email}
+            />
+
+            <Campo
+              label="Telefone"
+              value={contrato.empresa?.telefone}
+            />
+
+            <Campo
+              label="Endereço"
+              value={contrato.empresa?.endereco}
+            />
           </div>
+        </Cartao>
 
-          <div className={styles.grupoCamposTresColunas}>
+        {/* 3. CLASSIFICAÇÃO */}
+        <Cartao
+          titulo="Classificação"
+          icone={<BriefcaseIcon size={20} />}
+        >
+          <div className={styles.grupoCampos}>
+            <Campo
+              label="Categoria"
+              value={contrato.categoria?.nome}
+            />
 
-            <div className={styles.campo}>
-              <label>Dados da Licitação</label>
-              <input
-                type="text"
-                value={contrato.dados_licitacao ?? ""}
-                readOnly
-              />
-            </div>
+            <Campo
+              label="Situação do Contrato"
+              value={contrato.situacao_contrato?.situacao}
+            />
 
-            <div className={styles.campo}>
-              <label>UASG</label>
-              <input
-                type="text"
-                value={contrato.uasg ?? ""}
-                readOnly
-              />
-            </div>
+            <Campo
+              label="Situação no Gov"
+              value={contrato.situacao_gov}
+            />
 
-            <div className={styles.campo}>
-              <label>Número do Evento</label>
-              <input
-                type="text"
-                value={contrato.numero_evento ?? ""}
-                readOnly
-              />
-            </div>
-
-            <div className={styles.campo}>
-              <label>Nº Processo Celebração</label>
-              <input
-                type="text"
-                value={contrato.numero_processo_celebracao ?? ""}
-                readOnly
-              />
-            </div>
-
-            <div className={styles.campo}>
-              <label>Processo de Gestão</label>
-              <input
-                type="text"
-                value={contrato.processo_gestao ?? ""}
-                readOnly
-              />
-            </div>
-
-            <div className={styles.campo}>
-              <label>Link Processo Eletrônico</label>
-              <input
-                type="text"
-                value={contrato.link_processo_eletronico ?? ""}
-                readOnly
-              />
-            </div>
-
-            <div className={styles.campo}>
-              <label>Link Pasta de Gestão</label>
-              <input
-                type="text"
-                value={contrato.link_pasta_gestao ?? ""}
-                readOnly
-              />
-            </div>
-
-            <div className={styles.campo}>
-              <label>Link Pregão SRP</label>
-              <input
-                type="text"
-                value={contrato.link_pregao_srp ?? ""}
-                readOnly
-              />
-            </div>
-
+            <Campo
+              label="Natureza do Contrato"
+              value={contrato.natureza_contrato}
+            />
           </div>
-        </section>
+        </Cartao>
+
+        {/* 4. PROCESSOS E DOCUMENTOS */}
+        <Cartao
+          titulo="Processos e Documentos"
+          icone={<LinkIcon size={20} />}
+          larguraTotal
+        >
+          <div className={styles.grupoCampos}>
+            <Campo
+              label="Nº Processo de Celebração"
+              value={contrato.numero_processo_celebracao}
+            />
+
+            <Campo
+              label="Nota de Empenho"
+              value={contrato.nota_empenho}
+            />
+
+            <Campo
+              label="Dados da Licitação"
+              value={contrato.dados_licitacao}
+            />
+
+            <Campo
+              label="Processo de Gestão"
+              value={contrato.processo_gestao}
+            />
+
+            <Campo
+              label="Portaria de Fiscalização"
+              value={contrato.portaria_fiscalizacao}
+            />
+
+            <Campo
+              label="Link da Pasta de Gestão"
+              value={contrato.link_pasta_gestao}
+              type="url"
+            />
+
+            <Campo
+              label="Link do Processo Eletrônico"
+              value={contrato.link_processo_eletronico}
+              type="url"
+            />
+
+            <Campo
+              label="Link do Pregão SRP"
+              value={contrato.link_pregao_srp}
+              type="url"
+            />
+          </div>
+        </Cartao>
+
+        {/* 5. FISCALIZAÇÃO E GESTÃO */}
+        <Cartao
+          titulo="Fiscalização e Gestão"
+          icone={<UserIcon size={20} />}
+        >
+          <div className={styles.grupoCampos}>
+            <Campo
+              label="Fiscal Titular"
+              value={contrato.fiscal_titular}
+            />
+
+            <Campo
+              label="Fiscal Substituto"
+              value={contrato.fiscal_substituto}
+            />
+
+            <Campo
+              label="Gestor Titular"
+              value={contrato.gestor_titular}
+            />
+
+            <Campo
+              label="Gestor Substituto"
+              value={contrato.gestor_substituto}
+            />
+          </div>
+        </Cartao>
+
+        {/* 6. VALORES E ORÇAMENTO */}
+        <Cartao
+          titulo="Valores e Orçamento"
+          icone={<CurrencyDollarIcon size={20} />}
+        >
+          <div className={styles.grupoCampos}>
+            <Campo
+              label="Valor Global"
+              value={contrato.valor_global}
+            />
+
+            <Campo
+              label="Valor Mensal"
+              value={contrato.valor_mensal}
+            />
+
+            <Campo
+              label="Fonte de Recurso"
+              value={contrato.fonte_recurso}
+            />
+
+            <Campo
+              label="Natureza da Despesa"
+              value={contrato.natureza_despesa}
+            />
+
+            <Campo
+              label="Número do Evento"
+              value={contrato.numero_evento}
+            />
+
+            <Campo
+              label="UASG"
+              value={contrato.uasg}
+            />
+
+            <Campo
+              label="Plano Interno"
+              value={contrato.plano_interno}
+            />
+
+            <Campo
+              label="Programa de Trabalho"
+              value={contrato.programa_trabalho}
+            />
+
+            <Campo
+              label="Conta Vinculada"
+              value={contrato.conta_vinculada}
+            />
+          </div>
+        </Cartao>
+
+        {/* 7. VERBA */}
+        <Cartao
+          titulo="Verba"
+          icone={<CurrencyDollarIcon size={20} />}
+        >
+          <div className={styles.grupoCampos}>
+            <Campo
+              label="Descrição"
+              value={contrato.verba?.descricao}
+            />
+
+            <Campo
+              label="Valor Disponível"
+              value={contrato.verba?.valor_disponivel}
+            />
+
+            <Campo
+              label="Valor Utilizado"
+              value={contrato.verba?.valor_utilizado}
+            />
+          </div>
+        </Cartao>
+
+        {/* 8. REPRESENTANTE LEGAL */}
+        <Cartao
+          titulo="Representante Legal"
+          icone={<UserIcon size={20} />}
+        >
+          <div className={styles.grupoCampos}>
+            <Campo
+              label="Representante Legal"
+              value={contrato.representante_legal}
+            />
+
+            <Campo
+              label="CPF"
+              value={contrato.cpf_representante}
+            />
+
+            <Campo
+              label="RG"
+              value={contrato.rg_representante}
+            />
+
+            <Campo
+              label="E-mail"
+              value={contrato.email_contato}
+            />
+
+            <Campo
+              label="Endereço Postal"
+              value={contrato.endereco_postal}
+            />
+          </div>
+        </Cartao>
+
+        {/* 9. PRORROGAÇÕES */}
+        <Cartao
+          titulo="Prorrogações"
+          icone={<FileTextIcon size={20} />}
+          larguraTotal
+        >
+          <div className={styles.grupoCampos}>
+            {contrato.prorrogacao &&
+            contrato.prorrogacao.length > 0 ? (
+              contrato.prorrogacao.map((item) => (
+                <React.Fragment key={item.id_prorrogacao}>
+                  <Campo
+                    label= "Novo Prazo"
+                    value={item.novo_prazo}
+                  />
+
+                  <Campo
+                    label= "Novo Valor"
+                    value={item.novo_valor}
+                  />
+                </React.Fragment>
+              ))
+            ) : (
+              <p>Nenhuma prorrogação cadastrada.</p>
+            )}
+          </div>
+        </Cartao>
+
+        {/* 10. PAGAMENTOS */}
+        <Cartao
+          titulo="Pagamentos"
+          icone={<CurrencyDollarIcon size={20} />}
+          larguraTotal
+        >
+          <div className={styles.grupoCampos}>
+            {contrato.pagamento &&
+            contrato.pagamento.length > 0 ? (
+              contrato.pagamento.map((item) => (
+                <React.Fragment key={item.id_pagamento}>
+                  <Campo
+                    label="Descrição"
+                    value={item.descricao}
+                  />
+
+                  <Campo
+                    label= "Valor Pago"
+                    value={item.valor_pago}
+                  />
+                </React.Fragment>
+              ))
+            ) : (
+              <p>Nenhum pagamento cadastrado.</p>
+            )}
+          </div>
+        </Cartao>
+
+        {/* 11. NOTIFICAÇÕES */}
+        <Cartao
+          titulo="Notificações"
+          icone={<FileTextIcon size={20} />}
+          larguraTotal
+        >
+          <div className={styles.grupoCampos}>
+            {contrato.notificacao &&
+            contrato.notificacao.length > 0 ? (
+              contrato.notificacao.map((item) => (
+                <React.Fragment key={item.id_notificacao}>
+                  <Campo
+                    label= "Tipo de Notificação"
+                    value={item.tipo_notificacao?.tipo}
+                  />
+
+                  <Campo
+                    label= "Título"
+                    value={item.titulo}
+                  />
+
+                  <Campo
+                    label= "Descrição"
+                    value={item.descricao}
+                  />
+
+                  <Campo
+                    label= "Tempo de Envio"
+                    value={item.tempo_envio}
+                  />
+
+                  <Campo
+                    label= "Data de Criação"
+                    value={item.data_criacao}
+                  />
+                </React.Fragment>
+              ))
+            ) : (
+              <p>Nenhuma notificação cadastrada.</p>
+            )}
+          </div>
+        </Cartao>
 
       </div>
     </main>
