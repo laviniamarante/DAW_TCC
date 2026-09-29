@@ -1,7 +1,7 @@
 .header {
     background-color: #006652;
     color: #ffffff;
-    padding: 12px 24px;
+    padding: 25px 24px;
     width: 100%;
 }
 
@@ -9,7 +9,7 @@
     display: flex;
     align-items: center;
     gap: 16px;
-    max-width: 1000px;
+    width: calc(100% - 64px);
     margin: 0 auto;
 }
 
@@ -30,17 +30,17 @@
 }
 
 .logoText h1 {
-    font-size: 1.1rem;
+    font-size: 1.30rem;
     font-weight: 700;
     line-height: 1.1;
     color: #ffffff;
     margin: 0;
 }
 
-.logoText span {
-    font-size: 0.75rem;
-    opacity: 0.85;
-    color: #ffffff;
+.logoText {
+    display: flex;
+    flex-direction: column;
+    align-items: flex-start;
 }
 
 /* Menu Lateral (Drawer) */

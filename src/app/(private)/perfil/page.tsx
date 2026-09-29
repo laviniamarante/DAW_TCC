@@ -1,7 +1,6 @@
 "use client";
 
 import { UserCircle } from "@phosphor-icons/react";
-import { USUARIO_LOGADO } from "@/db/usuariosMock";
 import estilos from "./page.module.css";
 
 export default function PaginaPerfil() {
@@ -17,15 +16,15 @@ export default function PaginaPerfil() {
         <div className={estilos.grupoCampos}>
           <div className={estilos.campo}>
             <label>Nome</label>
-            <input type="text" value={USUARIO_LOGADO.nome} readOnly />
+        
           </div>
           <div className={estilos.campo}>
             <label>E-mail</label>
-            <input type="text" value={USUARIO_LOGADO.email} readOnly />
+            <input type="email" value="usuario@exemplo.com" readOnly />
           </div>
           <div className={estilos.campo}>
             <label>Papel no sistema</label>
-            <input type="text" value={USUARIO_LOGADO.papel} readOnly />
+            <input type="text" value="Administrador" readOnly />
           </div>
         </div>
       </section>
