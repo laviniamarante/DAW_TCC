@@ -132,28 +132,26 @@ export default function PaginaInicial() {
       >
         <div className={styles.cartaoEsquerda}>
 
-<div className={styles.cabecalhoTitulo}>
+        <div className={styles.cabecalhoTitulo}>
 
-  <div className={styles.titulosContrato}>
-    <h3 className={styles.tituloContrato}>
-      {contrato.identificador_contrato}
-    </h3>
+          <h3 className={styles.tituloContrato}>
+            {contrato.identificador_contrato}
+          </h3>
 
-    <h4 className={styles.nomeEmpresa}>
-      {contrato.empresa?.razao_social ||
-        "Não informado"}
-    </h4>
-  </div>
+          <span
+            className={`${styles.etiqueta} ${obterClasseEtiqueta(
+              situacao,
+            )}`}
+          >
+            {situacao}
+          </span>
 
-  <span
-    className={`${styles.etiqueta} ${obterClasseEtiqueta(
-      situacao,
-    )}`}
-  >
-    {situacao}
-  </span>
+        </div>
 
-</div>
+        <h4 className={styles.nomeEmpresa}>
+          {contrato.empresa?.razao_social ||
+            "Não informado"}
+        </h4>
 
           <p className={styles.infoContrato}>
             <strong>Fornecedor:</strong>{" "}

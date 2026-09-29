@@ -72,22 +72,16 @@
 
 .cartaoContrato {
     display: flex;
-    justify-content: space-between;
-    align-items: center;
-
+    flex-direction: column;
+    align-items: stretch;
     width: 100%;
     box-sizing: border-box;
-
     border: 1px solid #e2e8f0;
     border-radius: 12px;
-
     padding: 20px;
-
     background-color: #ffffff;
-
     transition: border-color 0.2s ease, box-shadow 0.2s ease;
 }
-
 .cartaoContrato:hover {
     border-color: #006c5b;
 }
@@ -104,7 +98,7 @@
     display: flex;
     align-items: center;
     gap: 12px;
-    flex-wrap: wrap;
+
 }
 
 .tituloContrato {
@@ -147,23 +141,28 @@
 /* BOTÃO VER DETALHES */
 
 .botaoDetalhes {
-    border: 1px solid #006c5b;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+
+    width: 100%;
+    box-sizing: border-box;
+
+    background-color: #a8d8d1;
     color: #006c5b;
 
-    padding: 8px 16px;
+    padding: 7px 16px;
+    margin-top: 12px;
+    border: none;
     border-radius: 6px;
-
     font-size: 14px;
     font-weight: 600;
-
     text-decoration: none;
-
-    transition: background-color 0.2s ease, color 0.2s ease;
+    transition: background-color 0.2s ease;
 }
 
 .botaoDetalhes:hover {
-    background-color: #006c5b;
-    color: #ffffff;
+    background-color: #8fcac1;
 }
 
 /* VER TODOS */
