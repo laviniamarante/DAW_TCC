@@ -154,3 +154,15 @@
         padding: 16px;
     }
 }
+
+.botaoSalvar {
+    background-color: #006652;
+    color: white;
+    padding: 10px 14px;
+    border-radius: 7px;
+    font-weight: 600;
+    font-size: 0.95rem;
+    cursor: pointer;
+    margin-top: 16px;
+    transition: opacity 0.2s;
+}

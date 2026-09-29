@@ -685,6 +685,7 @@ export default function PaginaDetalhesContrato({
           </div>
         </Cartao>
 
+          <button className={styles.botaoSalvar}> Salvar Alterações </button>
       </div>
     </main>
   );
