@@ -11,7 +11,7 @@ import {
 } from "@phosphor-icons/react";
 
 import { supabase } from "@/lib/supabase";
-import estilos from "./page.module.css";
+import styles from "./page.module.css";
 
 interface Contrato {
   id_contrato: number;
@@ -37,6 +37,14 @@ export default function PaginaContratos() {
 
   const [contratos, setContratos] = useState<Contrato[]>([]);
   const [carregando, setCarregando] = useState(true);
+
+  function formatarData(data: string | null) {
+  if (!data) return "Não informado";
+
+  const [ano, mes, dia] = data.split("-");
+
+  return `${dia}/${mes}/${ano}`;
+}
 
   useEffect(() => {
     async function buscarContratos() {
@@ -113,8 +121,8 @@ export default function PaginaContratos() {
 
   if (carregando) {
     return (
-      <main className={estilos.containerPrincipal}>
-        <h2 className={estilos.tituloPagina}>Contratos</h2>
+      <main className={styles.containerPrincipal}>
+        <h2 className={styles.tituloPagina}>Contratos</h2>
 
         <p
           style={{
@@ -130,13 +138,13 @@ export default function PaginaContratos() {
   }
 
   return (
-    <main className={estilos.containerPrincipal}>
-      <h2 className={estilos.tituloPagina}>Contratos</h2>
+    <main className={styles.containerPrincipal}>
+      <h2 className={styles.tituloPagina}>Contratos</h2>
 
-      <section className={estilos.cartaoFiltros}>
-        <form className={estilos.grupoBusca} onSubmit={realizarBusca}>
-          <div className={estilos.containerCampoBusca}>
-            <MagnifyingGlassIcon className={estilos.iconeBusca} />
+      <section className={styles.cartaoFiltros}>
+        <form className={styles.grupoBusca} onSubmit={realizarBusca}>
+          <div className={styles.containerCampoBusca}>
+            <MagnifyingGlassIcon className={styles.iconeBusca} />
 
             <input
               type="text"
@@ -146,14 +154,14 @@ export default function PaginaContratos() {
             />
           </div>
 
-          <button type="submit" className={estilos.botaoBusca}>
+          <button type="submit" className={styles.botaoBusca}>
             <MagnifyingGlassIcon size={16} />
             Buscar
           </button>
         </form>
 
-        <div className={estilos.containerSelecaoFiltro}>
-          <FunnelIcon className={estilos.iconeFiltro} />
+        <div className={styles.containerSelecaoFiltro}>
+          <FunnelIcon className={styles.iconeFiltro} />
 
           <select
             value={filtroStatus}
@@ -165,11 +173,11 @@ export default function PaginaContratos() {
             <option value="pendente">Pendentes</option>
           </select>
 
-          <CaretDownIcon className={estilos.iconeSeta} />
+          <CaretDownIcon className={styles.iconeSeta} />
         </div>
       </section>
 
-      <section className={estilos.listaContratos}>
+      <section className={styles.listaContratos}>
         {contratosFiltrados.length === 0 ? (
           <p
             style={{
@@ -184,42 +192,41 @@ export default function PaginaContratos() {
           contratosFiltrados.map((contrato) => (
             <div
               key={contrato.id_contrato}
-              className={estilos.cartaoContrato}
+              className={styles.cartaoContrato}
             >
-              <h3 className={estilos.tituloContrato}>
+              <h3 className={styles.tituloContrato}>
                 {contrato.objeto_contrato || "Objeto não informado"}
               </h3>
 
-              <p className={estilos.subtituloContrato}>
+              <p className={styles.subtituloContrato}>
                 {contrato.empresa?.razao_social ||
                   "Empresa não informada"}
               </p>
-
-              <p>
+              <p className={styles.identificadorContrato}>
                 Contrato: {contrato.identificador_contrato}
               </p>
 
-              <div className={estilos.datasContrato}>
-                <div className={estilos.itemData}>
+              <div className={styles.datasContrato}>
+                <div className={styles.itemData}>
                   <CalendarBlankIcon size={18} />
 
                   <span>
                     Início:{" "}
-                    {contrato.data_inicio || "Não informado"}
+                    {formatarData(contrato.data_inicio)}
                   </span>
                 </div>
 
-                <div className={estilos.itemData}>
+                <div className={styles.itemData}>
                   <CalendarBlankIcon size={18} />
 
                   <span>
                     Término:{" "}
-                    {contrato.data_fim || "Não informado"}
+                    {formatarData(contrato.data_fim)}
                   </span>
                 </div>
               </div>
 
-              <div className={estilos.statusContrato}>
+              <div className={styles.statusContrato}>
                 <CurrencyDollarIcon size={18} />
 
                 <span>
@@ -231,7 +238,7 @@ export default function PaginaContratos() {
 
               <Link
                 href={`/detalhes/${contrato.id_contrato}`}
-                className={estilos.botaoDetalhes}
+                className={styles.botaoDetalhes}
               >
                 Ver detalhes
               </Link>
