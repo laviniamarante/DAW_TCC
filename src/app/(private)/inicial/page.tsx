@@ -114,9 +114,12 @@ export default function PaginaInicial() {
           </p>
         </div>
 
-        <button className={styles.botaoNovoContrato}>
-          + Novo contrato
-        </button>
+      <Link
+    href="/cadastroContrato"
+    className={styles.botaoNovoContrato}
+>
+    + Novo contrato
+</Link>
       </div>
 
       <div className={styles.listaContratos}>
