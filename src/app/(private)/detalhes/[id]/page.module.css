@@ -1,5 +1,8 @@
+body{
+    background-color: #f7f7f7;
+}
 .container {
-    max-width: 1000px;
+    max-width: 1250px;
     margin: 24px auto;
     padding: 0 16px;
 }
@@ -13,11 +16,10 @@
     align-items: center;
     gap: 8px;
     background-color: #006652;
-    color: white;
     padding: 10px 14px;
     border-radius: 6px;
     font-weight: 600;
-    font-size: 0.95rem;
+    font-size: 1rem;
     cursor: pointer;
     text-decoration: none;
     margin-bottom: 16px;
@@ -35,8 +37,7 @@
 
 .cartao {
     width: 100%;
-    background-color: #f8f8f8;
-    border: 1px solid #e5e5e5;
+    background-color: #ffffff;
     border-radius: 10px;
     padding: 20px;
     box-sizing: border-box;
@@ -57,7 +58,7 @@
 
 .cabecalhoCartao h3 {
     margin: 0;
-    font-size: 1rem;
+    font-size: 1.1rem;
     font-weight: 700;
 }
 
@@ -85,11 +86,8 @@
 
 .campo label {
     display: block;
-
-    font-size: 0.78rem;
-
+    font-size: 0.90rem;
     color: #666;
-
     margin-bottom: 6px;
 }
 
@@ -165,4 +163,16 @@
     cursor: pointer;
     margin-top: 16px;
     transition: opacity 0.2s;
+}
+
+.areaTitulo {
+    margin-bottom: 16px;
+    font-size: 1rem;
+    font-weight: bold;
+}
+
+.subtitulo {
+    font-size: 1rem;
+    font-weight: 50;
+    margin-bottom: 8px;
 }

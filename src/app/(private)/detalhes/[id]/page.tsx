@@ -266,6 +266,8 @@ export default function PaginaDetalhesContrato({
           <h2>
             Detalhes do Contrato
           </h2>
+         <h4 className={styles.subtitulo}>Visualize todas as informações do contrato</h4>
+         
         </div>
       </div>
 
@@ -274,7 +276,7 @@ export default function PaginaDetalhesContrato({
         {/* 1. IDENTIFICAÇÃO DO CONTRATO */}
         <Cartao
           titulo="Identificação do Contrato"
-          icone={<FileTextIcon size={20} />}
+          icone={<FileTextIcon size={25} />}
           larguraTotal
         >
           <div className={styles.grupoCampos}>
@@ -334,7 +336,7 @@ export default function PaginaDetalhesContrato({
         {/* 2. EMPRESA */}
         <Cartao
           titulo="Empresa"
-          icone={<BriefcaseIcon size={20} />}
+          icone={<BriefcaseIcon size={25} />}
         >
           <div className={styles.grupoCampos}>
             <Campo
@@ -372,7 +374,7 @@ export default function PaginaDetalhesContrato({
         {/* 3. CLASSIFICAÇÃO */}
         <Cartao
           titulo="Classificação"
-          icone={<BriefcaseIcon size={20} />}
+          icone={<BriefcaseIcon size={25} />}
         >
           <div className={styles.grupoCampos}>
             <Campo
@@ -400,7 +402,7 @@ export default function PaginaDetalhesContrato({
         {/* 4. PROCESSOS E DOCUMENTOS */}
         <Cartao
           titulo="Processos e Documentos"
-          icone={<LinkIcon size={20} />}
+          icone={<LinkIcon size={25} />}
           larguraTotal
         >
           <div className={styles.grupoCampos}>
@@ -452,7 +454,7 @@ export default function PaginaDetalhesContrato({
         {/* 5. FISCALIZAÇÃO E GESTÃO */}
         <Cartao
           titulo="Fiscalização e Gestão"
-          icone={<UserIcon size={20} />}
+          icone={<UserIcon size={25} />}
         >
           <div className={styles.grupoCampos}>
             <Campo
@@ -480,7 +482,7 @@ export default function PaginaDetalhesContrato({
         {/* 6. VALORES E ORÇAMENTO */}
         <Cartao
           titulo="Valores e Orçamento"
-          icone={<CurrencyDollarIcon size={20} />}
+          icone={<CurrencyDollarIcon size={25} />}
         >
           <div className={styles.grupoCampos}>
             <Campo
@@ -533,7 +535,7 @@ export default function PaginaDetalhesContrato({
         {/* 7. VERBA */}
         <Cartao
           titulo="Verba"
-          icone={<CurrencyDollarIcon size={20} />}
+          icone={<CurrencyDollarIcon size={25} />}
         >
           <div className={styles.grupoCampos}>
             <Campo
@@ -556,7 +558,7 @@ export default function PaginaDetalhesContrato({
         {/* 8. REPRESENTANTE LEGAL */}
         <Cartao
           titulo="Representante Legal"
-          icone={<UserIcon size={20} />}
+          icone={<UserIcon size={25} />}
         >
           <div className={styles.grupoCampos}>
             <Campo
@@ -589,7 +591,7 @@ export default function PaginaDetalhesContrato({
         {/* 9. PRORROGAÇÕES */}
         <Cartao
           titulo="Prorrogações"
-          icone={<FileTextIcon size={20} />}
+          icone={<FileTextIcon size={25} />}
           larguraTotal
         >
           <div className={styles.grupoCampos}>
@@ -617,7 +619,7 @@ export default function PaginaDetalhesContrato({
         {/* 10. PAGAMENTOS */}
         <Cartao
           titulo="Pagamentos"
-          icone={<CurrencyDollarIcon size={20} />}
+          icone={<CurrencyDollarIcon size={25} />}
           larguraTotal
         >
           <div className={styles.grupoCampos}>
@@ -645,7 +647,7 @@ export default function PaginaDetalhesContrato({
         {/* 11. NOTIFICAÇÕES */}
         <Cartao
           titulo="Notificações"
-          icone={<FileTextIcon size={20} />}
+          icone={<FileTextIcon size={25} />}
           larguraTotal
         >
           <div className={styles.grupoCampos}>
