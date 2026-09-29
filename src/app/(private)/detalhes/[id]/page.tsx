@@ -260,12 +260,11 @@ export default function PaginaDetalhesContrato({
       <div className={styles.cabecalho}>
         <Link href="/contratos" className={styles.botaoVoltar}>
           <ArrowLeftIcon size={20} />
-          Voltar para Contratos
         </Link>
 
         <div className={styles.areaTitulo}>
           <h2>
-            Detalhes do Contrato #{contrato.identificador_contrato}
+            Detalhes do Contrato
           </h2>
         </div>
       </div>
