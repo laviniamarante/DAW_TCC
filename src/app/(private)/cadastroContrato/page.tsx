@@ -13,25 +13,34 @@ export default function NovoContrato() {
         Sistema de Gerenciamento de Contratos do IFPB - Campus Esperança
       </p>
       <h1>Novo Contrato</h1>
+      <div className={styles.bordaCard}>
+        <div className={styles.field}>
+          <label>Empresa Contratada</label>
+          <input
+            className={styles.input}
+            onChange={(e) => setForm({ teste: e.target.value })}
+            value={form.teste}
+            placeholder="Digite aqui"
+          ></input>
 
-      <div className={styles.row}>
-        <div className={styles.field}>
-          <label>Teste</label>
+          <div className={styles.field}>
+            <label>Numero do processo</label>
+            <input
+              className={styles.input}
+              onChange={(e) => setForm({ teste: e.target.value })}
+              value={form.teste}
+              placeholder="Digite aqui"
+            ></input>
+          </div>
+          <div className={styles.field}>
+          <label>Nome Representante</label>
           <input
             className={styles.input}
             onChange={(e) => setForm({ teste: e.target.value })}
             value={form.teste}
-            placeholder="Teste"
+            placeholder="Digite aqui"
           ></input>
-        </div>
-        <div className={styles.field}>
-          <label>Teste</label>
-          <input
-            className={styles.input}
-            onChange={(e) => setForm({ teste: e.target.value })}
-            value={form.teste}
-            placeholder="Teste"
-          ></input>
+          </div>
         </div>
       </div>
 
