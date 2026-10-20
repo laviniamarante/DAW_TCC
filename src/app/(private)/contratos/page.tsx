@@ -21,8 +21,8 @@ interface Contrato {
   data_fim: string | null;
 
   empresa: {
-    razao_social: string;
-    nome_fantasia: string | null;
+    nome_contratada: string;
+    natureza_contrato: string | null;
   } | null;
 
   situacao_contrato: {
@@ -57,8 +57,8 @@ export default function PaginaContratos() {
           data_inicio,
           data_fim,
           empresa (
-            razao_social,
-            nome_fantasia
+            nome_contratada,
+            natureza_contrato
           ),
           situacao_contrato (
             situacao
@@ -104,7 +104,7 @@ export default function PaginaContratos() {
       (contrato.objeto_contrato || "")
         .toLowerCase()
         .includes(textoBusca) ||
-      (contrato.empresa?.razao_social || "")
+      (contrato.empresa?.nome_contratada || "")
         .toLowerCase()
         .includes(textoBusca);
 
@@ -195,15 +195,12 @@ export default function PaginaContratos() {
               className={styles.cartaoContrato}
             >
               <h3 className={styles.tituloContrato}>
-                {contrato.objeto_contrato || "Objeto não informado"}
+                {contrato.identificador_contrato || "Contrato sem identificador"}
               </h3>
 
               <p className={styles.subtituloContrato}>
-                {contrato.empresa?.razao_social ||
-                  "Empresa não informada"}
-              </p>
-              <p className={styles.identificadorContrato}>
-                Contrato: {contrato.identificador_contrato}
+                {contrato.empresa?.nome_contratada ||
+                  "Natureza do contrato não informada"}
               </p>
 
               <div className={styles.datasContrato}>

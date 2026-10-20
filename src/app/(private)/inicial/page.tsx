@@ -15,8 +15,8 @@ interface Contrato {
   data_fim: string | null;
 
   empresa: {
-    razao_social: string;
-    nome_fantasia: string | null;
+    natureza_contrato: string;
+    nome_contratada: string | null;
   } | null;
 
   situacao_contrato: {
@@ -40,8 +40,8 @@ export default function PaginaInicial() {
           data_fim,
           empresa (
             id_empresa,
-            razao_social,
-            nome_fantasia
+            natureza_contrato,
+            nome_contratada
           ),
           situacao_contrato (
             id_situacao_contrato,
@@ -150,23 +150,14 @@ export default function PaginaInicial() {
           </span>
 
         </div>
-
         <h4 className={styles.nomeEmpresa}>
-          {contrato.empresa?.razao_social ||
+          {contrato.empresa?.nome_contratada ||
             "Não informado"}
         </h4>
 
           <p className={styles.infoContrato}>
-            <strong>Fornecedor:</strong>{" "}
-            {contrato.empresa?.nome_fantasia ||
-              contrato.empresa?.razao_social ||
-              "Não informado"}
-          </p>
-
-          <p className={styles.infoContrato}>
-            <strong>Objeto:</strong>{" "}
-            {contrato.objeto_contrato ||
-              "Não informado"}
+            <strong>Natureza do contrato:</strong>{" "}
+            {contrato.empresa?.natureza_contrato || "Não informado"}
           </p>
 
           <p className={styles.infoContrato}>

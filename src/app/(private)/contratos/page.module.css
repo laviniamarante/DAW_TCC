@@ -1,7 +1,9 @@
 .containerPrincipal {
-    max-width: 1250px;
-    margin: 24px auto;
-    padding: 0 16px;
+    min-height: 100vh;
+    width: 100%;
+    margin: 0;
+    padding: 32px 40px;
+    box-sizing: border-box;
 }
 
 .tituloPagina {

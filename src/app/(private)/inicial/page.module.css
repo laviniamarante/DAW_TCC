@@ -102,14 +102,14 @@
 }
 
 .tituloContrato {
-    font-size: 16px;
+    font-size: 20px;
     font-weight: bold;
     color: #006c5b;
     margin: 0;
 }
 
 .infoContrato {
-    font-size: 14px;
+    font-size: 16px;
     color: #4a5568;
     margin: 0;
 }
@@ -198,8 +198,7 @@
 }
 
 .nomeEmpresa {
-  margin: 8px 0 0;
-  font-size: 16px;
+  font-size: 17px;
   font-weight: bold;
   color: #6b6666;
 }

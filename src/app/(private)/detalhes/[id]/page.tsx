@@ -62,16 +62,12 @@ interface Contrato {
   link_pregao_srp: string | null;
 
   empresa: {
-    razao_social: string;
-    nome_fantasia: string | null;
+    natureza_contrato: string;
+    nome_contratada: string | null;
     cnpj: string | null;
     email: string | null;
     telefone: string | null;
     endereco: string | null;
-  } | null;
-
-  categoria: {
-    nome: string;
   } | null;
 
   verba: {
@@ -178,15 +174,12 @@ export default function PaginaDetalhesContrato({
         .select(`
           *,
           empresa (
-            razao_social,
-            nome_fantasia,
+            natureza_contrato,
+            nome_contratada,
             cnpj,
             email,
             telefone,
             endereco
-          ),
-          categoria (
-            nome
           ),
           verba (
             descricao,
@@ -341,12 +334,12 @@ export default function PaginaDetalhesContrato({
           <div className={styles.grupoCampos}>
             <Campo
               label="Razão Social"
-              value={contrato.empresa?.razao_social}
+              value={contrato.empresa?.natureza_contrato}
             />
 
             <Campo
               label="Nome Fantasia"
-              value={contrato.empresa?.nome_fantasia}
+              value={contrato.empresa?.nome_contratada}
             />
 
             <Campo
@@ -377,9 +370,10 @@ export default function PaginaDetalhesContrato({
           icone={<BriefcaseIcon size={25} />}
         >
           <div className={styles.grupoCampos}>
-            <Campo
+
+              <Campo
               label="Categoria"
-              value={contrato.categoria?.nome}
+              value={contrato.natureza_contrato}
             />
 
             <Campo
