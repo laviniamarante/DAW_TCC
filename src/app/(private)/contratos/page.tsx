@@ -1,13 +1,15 @@
+
 "use client";
 
-import { useState, useEffect } from "react";
+import { useState, useEffect, useRef } from "react";
 import Link from "next/link";
+
 import {
   MagnifyingGlassIcon,
   FunnelIcon,
   CaretDownIcon,
   CalendarBlankIcon,
-  CurrencyDollarIcon,
+  CheckIcon,
 } from "@phosphor-icons/react";
 
 import { supabase } from "@/lib/supabase";
@@ -30,22 +32,50 @@ interface Contrato {
   } | null;
 }
 
+const opcoesStatus = [
+  {
+    valor: "todos",
+    texto: "Todos os status",
+    classe: "pontoTodos",
+  },
+  {
+    valor: "ativo",
+    texto: "Ativos",
+    classe: "pontoAtivo",
+  },
+  {
+    valor: "vencido",
+    texto: "Vencidos",
+    classe: "pontoVencido",
+  },
+  {
+    valor: "pendente",
+    texto: "Pendentes",
+    classe: "pontoPendente",
+  },
+];
+
 export default function PaginaContratos() {
   const [valorBusca, setValorBusca] = useState("");
   const [buscaAtiva, setBuscaAtiva] = useState("");
   const [filtroStatus, setFiltroStatus] = useState("todos");
 
+  const [menuStatusAberto, setMenuStatusAberto] = useState(false);
+
+  const filtroRef = useRef<HTMLDivElement>(null);
+
   const [contratos, setContratos] = useState<Contrato[]>([]);
   const [carregando, setCarregando] = useState(true);
 
   function formatarData(data: string | null) {
-  if (!data) return "Não informado";
+    if (!data) return "Não informado";
 
-  const [ano, mes, dia] = data.split("-");
+    const [ano, mes, dia] = data.split("-");
 
-  return `${dia}/${mes}/${ano}`;
-}
+    return `${dia}/${mes}/${ano}`;
+  }
 
+  // Busca os contratos no Supabase
   useEffect(() => {
     async function buscarContratos() {
       const { data, error } = await supabase
@@ -77,23 +107,55 @@ export default function PaginaContratos() {
           empresa: Array.isArray(contrato.empresa)
             ? contrato.empresa[0] || null
             : contrato.empresa,
-          situacao_contrato: Array.isArray(contrato.situacao_contrato)
+          situacao_contrato: Array.isArray(
+            contrato.situacao_contrato
+          )
             ? contrato.situacao_contrato[0] || null
             : contrato.situacao_contrato,
-        }))
+        })) as Contrato[]
       );
+
       setCarregando(false);
     }
 
     buscarContratos();
   }, []);
 
-  const realizarBusca = (e?: { preventDefault: () => void }) => {
-    if (e) e.preventDefault();
+  // Fecha o menu quando o usuário clica fora dele ou pressiona Esc
+  useEffect(() => {
+    function fecharMenu(event: MouseEvent) {
+      if (
+        filtroRef.current &&
+        !filtroRef.current.contains(event.target as Node)
+      ) {
+        setMenuStatusAberto(false);
+      }
+    }
 
-    setBuscaAtiva(valorBusca);
+    function fecharComEsc(event: KeyboardEvent) {
+      if (event.key === "Escape") {
+        setMenuStatusAberto(false);
+      }
+    }
+
+    document.addEventListener("mousedown", fecharMenu);
+    document.addEventListener("keydown", fecharComEsc);
+
+    return () => {
+      document.removeEventListener("mousedown", fecharMenu);
+      document.removeEventListener("keydown", fecharComEsc);
+    };
+  }, []);
+
+  // Executa a busca por texto
+  const realizarBusca = (
+    e?: React.FormEvent<HTMLFormElement>
+  ) => {
+    e?.preventDefault();
+    setBuscaAtiva(valorBusca.trim());
   };
 
+  // Aplica a busca e o filtro de status
   const contratosFiltrados = contratos.filter((contrato) => {
     const textoBusca = buscaAtiva.toLowerCase();
 
@@ -112,12 +174,17 @@ export default function PaginaContratos() {
 
     if (filtroStatus !== "todos") {
       correspondeStatus =
-        contrato.situacao_contrato?.situacao?.toLowerCase() ===
+        contrato.situacao_contrato?.situacao?.trim().toLowerCase() ===
         filtroStatus;
     }
 
     return correspondeBusca && correspondeStatus;
   });
+
+  const statusSelecionado =
+    opcoesStatus.find(
+      (opcao) => opcao.valor === filtroStatus
+    ) || opcoesStatus[0];
 
   if (carregando) {
     return (
@@ -141,42 +208,128 @@ export default function PaginaContratos() {
     <main className={styles.containerPrincipal}>
       <h2 className={styles.tituloPagina}>Contratos</h2>
 
+      {/* Painel de busca e filtragem */}
       <section className={styles.cartaoFiltros}>
-        <form className={styles.grupoBusca} onSubmit={realizarBusca}>
+        <form
+          className={styles.grupoBusca}
+          onSubmit={realizarBusca}
+        >
           <div className={styles.containerCampoBusca}>
-            <MagnifyingGlassIcon className={styles.iconeBusca} />
+            <MagnifyingGlassIcon
+              className={styles.iconeBusca}
+            />
 
             <input
               type="text"
               placeholder="Buscar por nome ou número do contrato..."
               value={valorBusca}
-              onChange={(e) => setValorBusca(e.target.value)}
+              onChange={(e) =>
+                setValorBusca(e.target.value)
+              }
+              aria-label="Buscar contratos"
             />
           </div>
 
-          <button type="submit" className={styles.botaoBusca}>
+          <button
+            type="submit"
+            className={styles.botaoBusca}
+          >
             <MagnifyingGlassIcon size={16} />
             Buscar
           </button>
         </form>
 
-        <div className={styles.containerSelecaoFiltro}>
-          <FunnelIcon className={styles.iconeFiltro} />
-
-          <select
-            value={filtroStatus}
-            onChange={(e) => setFiltroStatus(e.target.value)}
+        {/* Menu de status personalizado */}
+        <div
+          className={styles.containerSelecaoFiltro}
+          ref={filtroRef}
+        >
+          <button
+            type="button"
+            className={`${styles.botaoFiltro} ${
+              menuStatusAberto
+                ? styles.botaoFiltroAberto
+                : ""
+            }`}
+            onClick={() =>
+              setMenuStatusAberto((aberto) => !aberto)
+            }
+            aria-haspopup="listbox"
+            aria-expanded={menuStatusAberto}
+            aria-label="Filtrar contratos por status"
           >
-            <option value="todos">Todos os status</option>
-            <option value="ativo">Ativos</option>
-            <option value="vencido">Vencidos</option>
-            <option value="pendente">Pendentes</option>
-          </select>
+            <FunnelIcon
+              className={styles.iconeFiltro}
+            />
 
-          <CaretDownIcon className={styles.iconeSeta} />
+            <span>{statusSelecionado.texto}</span>
+
+            <CaretDownIcon
+              className={`${styles.iconeSeta} ${
+                menuStatusAberto
+                  ? styles.iconeSetaAberta
+                  : ""
+              }`}
+            />
+          </button>
+
+          {menuStatusAberto && (
+            <div
+              className={styles.menuOpcoesFiltro}
+              role="listbox"
+              aria-label="Opções de status"
+            >
+              {opcoesStatus.map((opcao) => {
+                const selecionada =
+                  filtroStatus === opcao.valor;
+
+                return (
+                  <button
+                    key={opcao.valor}
+                    type="button"
+                    role="option"
+                    aria-selected={selecionada}
+                    className={`${
+                      styles.opcaoFiltro
+                    } ${
+                      selecionada
+                        ? styles.opcaoSelecionada
+                        : ""
+                    }`}
+                    onClick={() => {
+                      setFiltroStatus(opcao.valor);
+                      setMenuStatusAberto(false);
+                    }}
+                  >
+                    <span
+                      className={`${styles.pontoStatus} ${
+                        styles[opcao.classe]
+                      }`}
+                    />
+
+                    <span
+                      className={styles.textoOpcaoFiltro}
+                    >
+                      {opcao.texto}
+                    </span>
+
+                    {selecionada && (
+                      <CheckIcon
+                        className={
+                          styles.iconeOpcaoSelecionada
+                        }
+                        weight="bold"
+                      />
+                    )}
+                  </button>
+                );
+              })}
+            </div>
+          )}
         </div>
       </section>
 
+      {/* Lista de contratos */}
       <section className={styles.listaContratos}>
         {contratosFiltrados.length === 0 ? (
           <p
@@ -195,13 +348,30 @@ export default function PaginaContratos() {
               className={styles.cartaoContrato}
             >
               <h3 className={styles.tituloContrato}>
-                {contrato.identificador_contrato || "Contrato sem identificador"}
+                {contrato.identificador_contrato ||
+                  "Contrato sem identificador"}
               </h3>
 
               <p className={styles.subtituloContrato}>
                 {contrato.empresa?.nome_contratada ||
-                  "Natureza do contrato não informada"}
+                  "Nome da empresa não informado"}
               </p>
+
+              <div className={styles.naturezaContrato}>
+                <span>
+                  Natureza do contrato:{" "}
+                  {contrato.empresa?.natureza_contrato ||
+                    "Não informada"}
+                </span>
+              </div>
+
+              <div className={styles.statusContrato}>
+                <span>
+                  Status:{" "}
+                  {contrato.situacao_contrato?.situacao ||
+                    "Não informado"}
+                </span>
+              </div>
 
               <div className={styles.datasContrato}>
                 <div className={styles.itemData}>
@@ -221,16 +391,6 @@ export default function PaginaContratos() {
                     {formatarData(contrato.data_fim)}
                   </span>
                 </div>
-              </div>
-
-              <div className={styles.statusContrato}>
-                
-
-                <span>
-                  Status:{" "}
-                  {contrato.situacao_contrato?.situacao ||
-                    "Não informado"}
-                </span>
               </div>
 
               <Link

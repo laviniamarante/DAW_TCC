@@ -1,3 +1,4 @@
+
 .containerPrincipal {
     min-height: 100vh;
     width: 100%;
@@ -13,107 +14,277 @@
     color: #1a1a1a;
 }
 
+/* ==============================
+   PAINEL DE FILTRAGEM
+============================== */
+
 .cartaoFiltros {
     background: #ffffff;
-    border: 1px solid #e0e0e0;
-    border-radius: 8px;
-    padding: 16px;
+    border: 1px solid #e2e9e6;
+    border-radius: 14px;
+    padding: 24px;
     display: flex;
+    align-items: stretch;
     gap: 16px;
-    margin-bottom: 20px;
-    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.02);
+    margin-bottom: 28px;
+    box-shadow: 0 4px 14px rgba(0, 70, 52, 0.05);
+    box-sizing: border-box;
 }
+
+/* Campo de busca */
 
 .grupoBusca {
     display: flex;
     flex: 2;
-    gap: 8px;
+    min-width: 0;
+    gap: 12px;
 }
 
 .containerCampoBusca {
     position: relative;
     flex: 1;
+    min-width: 0;
     display: flex;
     align-items: center;
 }
 
 .iconeBusca {
     position: absolute;
-    left: 12px;
-    font-size: 18px;
-    color: #666;
+    left: 15px;
+    font-size: 20px;
+    color: #71827b;
+    pointer-events: none;
 }
 
 .containerCampoBusca input {
     width: 100%;
-    padding: 10px 12px 10px 38px;
-    background-color: #ededed;
-    border: 1px solid transparent;
-    border-radius: 6px;
+    min-width: 0;
+    height: 46px;
+    padding: 0 14px 0 44px;
+    box-sizing: border-box;
+    background-color: #f8faf9;
+    border: 1px solid #dce5e1;
+    border-radius: 9px;
+    font-family: inherit;
     font-size: 0.9rem;
+    color: #263b33;
     outline: none;
+    transition:
+        border-color 0.2s,
+        box-shadow 0.2s,
+        background-color 0.2s;
+}
+
+.containerCampoBusca input::placeholder {
+    color: #8a9690;
 }
 
 .containerCampoBusca input:focus {
     border-color: #006652;
-    background-color: #fff;
+    background-color: #ffffff;
+    box-shadow: 0 0 0 3px rgba(0, 102, 82, 0.10);
 }
 
+/* Botão buscar */
+
 .botaoBusca {
+    min-height: 46px;
     background-color: #006652;
     color: #ffffff;
-    border: none;
-    padding: 0 18px;
-    border-radius: 6px;
+    border: 1px solid #006652;
+    padding: 0 22px;
+    border-radius: 9px;
+    font-family: inherit;
     font-weight: 600;
     font-size: 0.9rem;
     cursor: pointer;
     display: flex;
     align-items: center;
-    gap: 6px;
-    transition: background-color 0.2s;
+    justify-content: center;
+    gap: 8px;
     white-space: nowrap;
+    transition:
+        background-color 0.2s,
+        transform 0.2s;
 }
 
 .botaoBusca:hover {
     background-color: #004d3e;
 }
 
+.botaoBusca:focus-visible {
+    outline: 3px solid rgba(0, 102, 82, 0.25);
+    outline-offset: 3px;
+}
+
+/* ==============================
+   FILTRO DE STATUS PERSONALIZADO
+============================== */
+
 .containerSelecaoFiltro {
     position: relative;
     flex: 1;
+    min-width: 190px;
+    align-self: stretch;
+}
+
+/* Botão que abre o menu */
+
+.botaoFiltro {
+    width: 100%;
+    height: 46px;
+    padding: 0 14px;
     display: flex;
     align-items: center;
-    background-color: #ededed;
-    border-radius: 6px;
-    padding: 0 12px;
+    gap: 10px;
+    background: #f8faf9;
+    border: 1px solid #dce5e1;
+    border-radius: 9px;
+    color: #344a43;
+    font-family: inherit;
+    font-size: 0.9rem;
+    text-align: left;
+    cursor: pointer;
+    transition:
+        background-color 0.2s,
+        border-color 0.2s,
+        box-shadow 0.2s;
+}
+
+.botaoFiltro:hover {
+    background: #f0f6f3;
+    border-color: #b9d1c8;
+}
+
+.botaoFiltroAberto {
+    background: #ffffff;
+    border-color: #006652;
+    box-shadow: 0 0 0 3px rgba(0, 102, 82, 0.09);
 }
 
 .iconeFiltro {
-    font-size: 18px;
-    color: #333;
-    margin-right: 8px;
+    flex-shrink: 0;
+    font-size: 19px;
+    color: #006652;
 }
 
 .iconeSeta {
-    position: absolute;
-    right: 12px;
-    pointer-events: none;
-    font-size: 14px;
-    color: #333;
+    margin-left: auto;
+    flex-shrink: 0;
+    font-size: 15px;
+    color: #64766e;
+    transition: transform 0.2s;
 }
 
-.containerSelecaoFiltro select {
+.iconeSetaAberta {
+    transform: rotate(180deg);
+}
+
+/* Menu suspenso */
+
+.menuOpcoesFiltro {
+    position: absolute;
+    top: calc(100% + 8px);
+    left: 0;
+    right: 0;
+    z-index: 100;
+    padding: 6px;
+    background: #ffffff;
+    border: 1px solid #e0e9e4;
+    border-radius: 12px;
+    box-shadow:
+        0 10px 28px rgba(25, 55, 43, 0.12),
+        0 2px 6px rgba(25, 55, 43, 0.04);
+    animation: aparecerMenu 0.16s ease-out;
+}
+
+@keyframes aparecerMenu {
+    from {
+        opacity: 0;
+        transform: translateY(-4px);
+    }
+
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
+
+/* Opções do menu */
+
+.opcaoFiltro {
     width: 100%;
-    padding: 10px 20px 10px 0;
+    min-height: 42px;
+    padding: 0 11px;
+    display: flex;
+    align-items: center;
+    gap: 11px;
     background: transparent;
     border: none;
+    border-radius: 8px;
+    color: #344a43;
+    font-family: inherit;
     font-size: 0.9rem;
-    color: #333;
-    appearance: none;
-    outline: none;
+    text-align: left;
     cursor: pointer;
+    transition:
+        background-color 0.15s,
+        color 0.15s;
 }
+
+.opcaoFiltro:hover {
+    background: #f3f7f5;
+}
+
+.opcaoSelecionada,
+.opcaoSelecionada:hover {
+    background: #eaf4f0;
+    color: #006652;
+    font-weight: 600;
+}
+
+.textoOpcaoFiltro {
+    flex: 1;
+}
+
+/* Indicadores de status */
+
+.pontoStatus {
+    width: 9px;
+    height: 9px;
+    flex-shrink: 0;
+    border-radius: 50%;
+}
+
+.pontoTodos {
+    background: #2d3634;
+}
+
+.pontoAtivo {
+    background: #16805d;
+}
+
+.pontoVencido {
+    background: #d64545;
+}
+
+.pontoPendente {
+    background: #d49a20;
+}
+
+.iconeOpcaoSelecionada {
+    flex-shrink: 0;
+    font-size: 17px;
+    color: #006652;
+}
+
+.botaoFiltro:focus-visible,
+.opcaoFiltro:focus-visible {
+    outline: 2px solid #006652;
+    outline-offset: 2px;
+}
+
+
 
 .listaContratos {
     display: flex;
@@ -131,16 +302,44 @@
 
 .tituloContrato {
     font-size: 1.1rem;
-    font-weight: 700;
-    color: #1a1a1a;
-    margin-bottom: 4px;
+    font-weight: bold;
+    color: #006652;
+    margin-bottom: 6px;
 }
 
 .subtituloContrato {
-    font-size: 0.95rem;
-    color: #555;
-    margin-bottom: 16px;
+    font-size: 0.98rem;
+    font-weight: 600;
+    margin-bottom: 8px;
 }
+
+.identificadorContrato {
+    margin: -7px 0 10px;
+    color: #444;
+    font-size: 0.9rem;
+    font-weight: bold;
+}
+
+/* Natureza do contrato */
+
+.naturezaContrato {
+    margin-bottom: 8px;
+    color: #444;
+    font-size: 1rem;
+}
+
+/* Status do contrato */
+
+.statusContrato {
+    display: flex;
+    align-items: center;
+    gap: 6px;
+    color: #444;
+    font-size: 1rem;
+    margin-bottom: 9px;
+}
+
+/* Datas */
 
 .datasContrato {
     display: flex;
@@ -148,26 +347,20 @@
     gap: 8px;
     margin-bottom: 12px;
     color: #444;
-    font-size: 0.9rem;
+    font-size: 1rem;
 }
+
 .itemData {
     display: flex;
     align-items: center;
     gap: 6px;
 }
 
-.statusContrato {
-    display: flex;
-    align-items: center;
-    gap: 6px;
-    color: #444;
-    font-size: 0.9rem;
-    margin-bottom: 20px;
-}
 
 .botaoDetalhes {
     display: block;
     width: 100%;
+    box-sizing: border-box;
     text-align: center;
     background-color: #006652;
     color: #ffffff;
@@ -177,6 +370,7 @@
     font-weight: 600;
     font-size: 0.95rem;
     cursor: pointer;
+    text-decoration: none;
     transition: background-color 0.2s;
 }
 
@@ -184,13 +378,50 @@
     background-color: #004d3e;
 }
 
-@media (max-width: 600px) {
+
+@media (max-width: 900px) {
     .cartaoFiltros {
-        flex-direction: column;
+        flex-wrap: wrap;
+        padding: 20px;
+    }
+
+    .grupoBusca {
+        flex: 1 1 100%;
+    }
+
+    .containerSelecaoFiltro {
+        flex: 1 1 100%;
+        min-width: 0;
+    }
+}
+
+@media (max-width: 600px) {
+    .containerPrincipal {
+        padding: 24px 16px;
+    }
+
+    .cartaoFiltros {
+        padding: 16px;
+        gap: 14px;
+        border-radius: 12px;
     }
 
     .grupoBusca {
         flex-direction: column;
+        gap: 10px;
+    }
+
+    .containerCampoBusca input {
+        font-size: 0.85rem;
+    }
+
+    .botaoBusca {
+        width: 100%;
+        min-height: 44px;
+    }
+
+    .containerSelecaoFiltro {
+        width: 100%;
     }
 
     .datasContrato {
@@ -198,10 +429,3 @@
         gap: 8px;
     }
 }
-.identificadorContrato {
-    margin: -7px 0 10px;
-    color: #444;
-    font-size: 0.9rem;
-    font-weight: bold;
-}
-
