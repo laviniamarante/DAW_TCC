@@ -28,8 +28,10 @@ export default function PaginaInicial() {
   const [contratosRecentes, setContratosRecentes] = useState<Contrato[]>([]);
   const [carregando, setCarregando] = useState(true);
 
-  useEffect(() => {
-    async function buscarContratosRecentes() {
+
+useEffect(() => {
+  async function buscarContratosRecentes() {
+    try {
       const { data, error } = await supabase
         .from("contrato")
         .select(`
@@ -50,15 +52,31 @@ export default function PaginaInicial() {
         `)
         .order("id_contrato", { ascending: false })
         .limit(5);
-        //aqui eu basicamente so to chamando os dados que eu quero la do supabase, coloquei em ordem do maior pro menor para que os contratos mais recentes apareçam antes, e que o limite seja 5, ja que eu só quero os 5 mais recentes
-        const contratos = (data || []) as unknown as Contrato[];
 
-        setContratosRecentes(contratos);
-        setCarregando(false);
-        }
+      // Verifica se o Supabase retornou algum erro
+      if (error) {
+        console.error("Erro ao buscar contratos:");
+        console.error("Mensagem:", error.message);
+        console.error("Detalhes:", error.details);
+        console.error("Código:", error.code);
+        console.error("Dica:", error.hint);
+        return;
+      }
 
-    buscarContratosRecentes();
-  }, []);
+      const contratos = (data || []) as unknown as Contrato[];
+
+      setContratosRecentes(contratos);
+
+    } catch (erro) {
+      console.error("Erro inesperado:", erro);
+    } finally {
+      setCarregando(false);
+    }
+  }
+
+  buscarContratosRecentes();
+}, []);
+
 
   //aqui eu simplesmente vou definir a classe css a ser usada conforme a situação do contrato
   const obterClasseEtiqueta = (
