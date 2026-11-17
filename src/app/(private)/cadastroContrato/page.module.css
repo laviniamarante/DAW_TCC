@@ -46,6 +46,9 @@
   font-size: 20px;
   box-sizing: border-box;
 }
+.gradeCartoes{
+  margin-top: auto 
+;}
 
 .row {
   display: flex;
@@ -58,6 +61,7 @@
 .bordaCard {
   background: #fff;
   border-radius: 12px;
+  margin-top: 50px;
   padding: 24px;
   box-shadow: 0 1px 4px rgba(0, 0, 0, 0.08);
 }
