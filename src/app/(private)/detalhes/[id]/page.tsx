@@ -1,3 +1,4 @@
+
 "use client";
 
 import React, { useEffect, useState } from "react";
@@ -104,6 +105,19 @@ interface Contrato {
   }[] | null;
 }
 
+interface ComentarioFiscal {
+  id_comentario: number;
+  id_contrato: number;
+  id_pessoa: number;
+  comentario: string;
+  data_criacao: string;
+  status: string;
+  data_resolucao: string | null;
+  pessoa: {
+    nome: string;
+  } | null;
+}
+
 interface PropsPagina {
   params: Promise<{ id: string }>;
 }
@@ -121,7 +135,6 @@ function Campo({
   return (
     <div className={styles.campo}>
       <label>{label}</label>
-
 
       <input
         type={type}
@@ -167,6 +180,11 @@ export default function PaginaDetalhesContrato({
   const [contrato, setContrato] = useState<Contrato | null>(null);
   const [carregando, setCarregando] = useState(true);
 
+  const [comentarios, setComentarios] = useState<ComentarioFiscal[]>([]);
+  const [carregandoComentarios, setCarregandoComentarios] = useState(true);
+  const [resolvendo, setResolvendo] = useState<number | null>(null);
+
+  /* BUSCAR CONTRATO */
   useEffect(() => {
     async function buscarContrato() {
       const { data, error } = await supabase
@@ -226,6 +244,78 @@ export default function PaginaDetalhesContrato({
     buscarContrato();
   }, [id]);
 
+  useEffect(() => {
+    async function buscarComentarios() {
+      setCarregandoComentarios(true);
+
+      const { data, error } = await supabase
+        .from("comentario_fiscal")
+        .select(`
+          *,
+          pessoa!fk_comentario_pessoa (
+            nome
+          )
+        `)
+        .eq("id_contrato", Number(id))
+        .order("data_criacao", { ascending: false });
+
+      if (error) {
+        console.error("Erro ao buscar comentários:", error);
+        setComentarios([]);
+      } else {
+        setComentarios(data || []);
+      }
+
+      setCarregandoComentarios(false);
+    }
+
+    buscarComentarios();
+  }, [id]);
+
+  /* RESOLVER COMENTÁRIO */
+  async function resolverComentario(idComentario: number) {
+    const confirmar = window.confirm(
+      "Você confirma que a alteração solicitada foi realizada?"
+    );
+
+    if (!confirmar) return;
+
+    setResolvendo(idComentario);
+
+    const dataResolucao = new Date().toISOString();
+
+    const { error } = await supabase
+      .from("comentario_fiscal")
+      .update({
+        status: "Resolvido",
+        data_resolucao: dataResolucao,
+      })
+      .eq("id_comentario", idComentario)
+      .eq("id_contrato", Number(id));
+
+    if (error) {
+      console.error("Erro ao resolver comentário:", error);
+      window.alert("Não foi possível atualizar o comentário.");
+    } else {
+      setComentarios((anteriores) =>
+        anteriores.map((item) =>
+          item.id_comentario === idComentario
+            ? {
+                ...item,
+                status: "Resolvido",
+                data_resolucao: dataResolucao,
+              }
+            : item
+        )
+      );
+
+      window.alert("Comentário marcado como resolvido!");
+    }
+
+    setResolvendo(null);
+  }
+
+  /* CARREGAMENTO */
   if (carregando) {
     return (
       <main className={styles.containerNaoEncontrado}>
@@ -256,11 +346,10 @@ export default function PaginaDetalhesContrato({
         </Link>
 
         <div className={styles.areaTitulo}>
-          <h2>
-            Detalhes do Contrato
-          </h2>
-         <h4 className={styles.subtitulo}>Visualize todas as informações do contrato</h4>
-         
+          <h2>Detalhes do Contrato</h2>
+          <h4 className={styles.subtitulo}>
+            Visualize todas as informações do contrato
+          </h4>
         </div>
       </div>
 
@@ -273,30 +362,11 @@ export default function PaginaDetalhesContrato({
           larguraTotal
         >
           <div className={styles.grupoCampos}>
-            <Campo
-              label="Objeto do Contrato"
-              value={contrato.objeto_contrato}
-            />
-
-            <Campo
-              label="Identificador do Contrato"
-              value={contrato.identificador_contrato}
-            />
-
-            <Campo
-              label="Vigência"
-              value={contrato.vigencia}
-            />
-
-            <Campo
-              label="Data de Início"
-              value={contrato.data_inicio}
-            />
-
-            <Campo
-              label="Data de Fim"
-              value={contrato.data_fim}
-            />
+            <Campo label="Objeto do Contrato" value={contrato.objeto_contrato} />
+            <Campo label="Identificador do Contrato" value={contrato.identificador_contrato} />
+            <Campo label="Vigência" value={contrato.vigencia} />
+            <Campo label="Data de Início" value={contrato.data_inicio} />
+            <Campo label="Data de Fim" value={contrato.data_fim} />
 
             <Campo
               label="Prorrogável"
@@ -309,87 +379,31 @@ export default function PaginaDetalhesContrato({
               }
             />
 
-            <Campo
-              label="Prazo Restante"
-              value={contrato.prazo_restante}
-            />
-
-            <Campo
-              label="Data de Celebração"
-              value={contrato.data_celebracao}
-            />
-
-            <Campo
-              label="Representante Legal"
-              value={contrato.representante_legal}
-            />
+            <Campo label="Prazo Restante" value={contrato.prazo_restante} />
+            <Campo label="Data de Celebração" value={contrato.data_celebracao} />
+            <Campo label="Representante Legal" value={contrato.representante_legal} />
           </div>
         </Cartao>
 
         {/* 2. EMPRESA */}
-        <Cartao
-          titulo="Empresa"
-          icone={<BriefcaseIcon size={25} />}
-        >
+        <Cartao titulo="Empresa" icone={<BriefcaseIcon size={25} />}>
           <div className={styles.grupoCampos}>
-            <Campo
-              label="Razão Social"
-              value={contrato.empresa?.natureza_contrato}
-            />
-
-            <Campo
-              label="Nome Fantasia"
-              value={contrato.empresa?.nome_contratada}
-            />
-
-            <Campo
-              label="CNPJ"
-              value={contrato.empresa?.cnpj}
-            />
-
-            <Campo
-              label="E-mail"
-              value={contrato.empresa?.email}
-            />
-
-            <Campo
-              label="Telefone"
-              value={contrato.empresa?.telefone}
-            />
-
-            <Campo
-              label="Endereço"
-              value={contrato.empresa?.endereco}
-            />
+            <Campo label="Razão Social" value={contrato.empresa?.natureza_contrato} />
+            <Campo label="Nome Fantasia" value={contrato.empresa?.nome_contratada} />
+            <Campo label="CNPJ" value={contrato.empresa?.cnpj} />
+            <Campo label="E-mail" value={contrato.empresa?.email} />
+            <Campo label="Telefone" value={contrato.empresa?.telefone} />
+            <Campo label="Endereço" value={contrato.empresa?.endereco} />
           </div>
         </Cartao>
 
         {/* 3. CLASSIFICAÇÃO */}
-        <Cartao
-          titulo="Classificação"
-          icone={<BriefcaseIcon size={25} />}
-        >
+        <Cartao titulo="Classificação" icone={<BriefcaseIcon size={25} />}>
           <div className={styles.grupoCampos}>
-
-              <Campo
-              label="Categoria"
-              value={contrato.natureza_contrato}
-            />
-
-            <Campo
-              label="Situação do Contrato"
-              value={contrato.situacao_contrato?.situacao}
-            />
-
-            <Campo
-              label="Situação no Gov"
-              value={contrato.situacao_gov}
-            />
-
-            <Campo
-              label="Natureza do Contrato"
-              value={contrato.natureza_contrato}
-            />
+            <Campo label="Categoria" value={contrato.natureza_contrato} />
+            <Campo label="Situação do Contrato" value={contrato.situacao_contrato?.situacao} />
+            <Campo label="Situação no Gov" value={contrato.situacao_gov} />
+            <Campo label="Natureza do Contrato" value={contrato.natureza_contrato} />
           </div>
         </Cartao>
 
@@ -400,185 +414,59 @@ export default function PaginaDetalhesContrato({
           larguraTotal
         >
           <div className={styles.grupoCampos}>
-            <Campo
-              label="Nº Processo de Celebração"
-              value={contrato.numero_processo_celebracao}
-            />
-
-            <Campo
-              label="Nota de Empenho"
-              value={contrato.nota_empenho}
-            />
-
-            <Campo
-              label="Dados da Licitação"
-              value={contrato.dados_licitacao}
-            />
-
-            <Campo
-              label="Processo de Gestão"
-              value={contrato.processo_gestao}
-            />
-
-            <Campo
-              label="Portaria de Fiscalização"
-              value={contrato.portaria_fiscalizacao}
-            />
-
-            <Campo
-              label="Link da Pasta de Gestão"
-              value={contrato.link_pasta_gestao}
-              type="url"
-            />
-
-            <Campo
-              label="Link do Processo Eletrônico"
-              value={contrato.link_processo_eletronico}
-              type="url"
-            />
-
-            <Campo
-              label="Link do Pregão SRP"
-              value={contrato.link_pregao_srp}
-              type="url"
-            />
+            <Campo label="Nº Processo de Celebração" value={contrato.numero_processo_celebracao} />
+            <Campo label="Nota de Empenho" value={contrato.nota_empenho} />
+            <Campo label="Dados da Licitação" value={contrato.dados_licitacao} />
+            <Campo label="Processo de Gestão" value={contrato.processo_gestao} />
+            <Campo label="Portaria de Fiscalização" value={contrato.portaria_fiscalizacao} />
+            <Campo label="Link da Pasta de Gestão" value={contrato.link_pasta_gestao} type="url" />
+            <Campo label="Link do Processo Eletrônico" value={contrato.link_processo_eletronico} type="url" />
+            <Campo label="Link do Pregão SRP" value={contrato.link_pregao_srp} type="url" />
           </div>
         </Cartao>
 
         {/* 5. FISCALIZAÇÃO E GESTÃO */}
-        <Cartao
-          titulo="Fiscalização e Gestão"
-          icone={<UserIcon size={25} />}
-        >
+        <Cartao titulo="Fiscalização e Gestão" icone={<UserIcon size={25} />}>
           <div className={styles.grupoCampos}>
-            <Campo
-              label="Fiscal Titular"
-              value={contrato.fiscal_titular}
-            />
-
-            <Campo
-              label="Fiscal Substituto"
-              value={contrato.fiscal_substituto}
-            />
-
-            <Campo
-              label="Gestor Titular"
-              value={contrato.gestor_titular}
-            />
-
-            <Campo
-              label="Gestor Substituto"
-              value={contrato.gestor_substituto}
-            />
+            <Campo label="Fiscal Titular" value={contrato.fiscal_titular} />
+            <Campo label="Fiscal Substituto" value={contrato.fiscal_substituto} />
+            <Campo label="Gestor Titular" value={contrato.gestor_titular} />
+            <Campo label="Gestor Substituto" value={contrato.gestor_substituto} />
           </div>
         </Cartao>
 
         {/* 6. VALORES E ORÇAMENTO */}
-        <Cartao
-          titulo="Valores e Orçamento"
-          icone={<CurrencyDollarIcon size={25} />}
-        >
+        <Cartao titulo="Valores e Orçamento" icone={<CurrencyDollarIcon size={25} />}>
           <div className={styles.grupoCampos}>
-            <Campo
-              label="Valor Global"
-              value={contrato.valor_global}
-            />
-
-            <Campo
-              label="Valor Mensal"
-              value={contrato.valor_mensal}
-            />
-
-            <Campo
-              label="Fonte de Recurso"
-              value={contrato.fonte_recurso}
-            />
-
-            <Campo
-              label="Natureza da Despesa"
-              value={contrato.natureza_despesa}
-            />
-
-            <Campo
-              label="Número do Evento"
-              value={contrato.numero_evento}
-            />
-
-            <Campo
-              label="UASG"
-              value={contrato.uasg}
-            />
-
-            <Campo
-              label="Plano Interno"
-              value={contrato.plano_interno}
-            />
-
-            <Campo
-              label="Programa de Trabalho"
-              value={contrato.programa_trabalho}
-            />
-
-            <Campo
-              label="Conta Vinculada"
-              value={contrato.conta_vinculada}
-            />
+            <Campo label="Valor Global" value={contrato.valor_global} />
+            <Campo label="Valor Mensal" value={contrato.valor_mensal} />
+            <Campo label="Fonte de Recurso" value={contrato.fonte_recurso} />
+            <Campo label="Natureza da Despesa" value={contrato.natureza_despesa} />
+            <Campo label="Número do Evento" value={contrato.numero_evento} />
+            <Campo label="UASG" value={contrato.uasg} />
+            <Campo label="Plano Interno" value={contrato.plano_interno} />
+            <Campo label="Programa de Trabalho" value={contrato.programa_trabalho} />
+            <Campo label="Conta Vinculada" value={contrato.conta_vinculada} />
           </div>
         </Cartao>
 
         {/* 7. VERBA */}
-        <Cartao
-          titulo="Verba"
-          icone={<CurrencyDollarIcon size={25} />}
-        >
+        <Cartao titulo="Verba" icone={<CurrencyDollarIcon size={25} />}>
           <div className={styles.grupoCampos}>
-            <Campo
-              label="Descrição"
-              value={contrato.verba?.descricao}
-            />
-
-            <Campo
-              label="Valor Disponível"
-              value={contrato.verba?.valor_disponivel}
-            />
-
-            <Campo
-              label="Valor Utilizado"
-              value={contrato.verba?.valor_utilizado}
-            />
+            <Campo label="Descrição" value={contrato.verba?.descricao} />
+            <Campo label="Valor Disponível" value={contrato.verba?.valor_disponivel} />
+            <Campo label="Valor Utilizado" value={contrato.verba?.valor_utilizado} />
           </div>
         </Cartao>
 
         {/* 8. REPRESENTANTE LEGAL */}
-        <Cartao
-          titulo="Representante Legal"
-          icone={<UserIcon size={25} />}
-        >
+        <Cartao titulo="Representante Legal" icone={<UserIcon size={25} />}>
           <div className={styles.grupoCampos}>
-            <Campo
-              label="Representante Legal"
-              value={contrato.representante_legal}
-            />
-
-            <Campo
-              label="CPF"
-              value={contrato.cpf_representante}
-            />
-
-            <Campo
-              label="RG"
-              value={contrato.rg_representante}
-            />
-
-            <Campo
-              label="E-mail"
-              value={contrato.email_contato}
-            />
-
-            <Campo
-              label="Endereço Postal"
-              value={contrato.endereco_postal}
-            />
+            <Campo label="Representante Legal" value={contrato.representante_legal} />
+            <Campo label="CPF" value={contrato.cpf_representante} />
+            <Campo label="RG" value={contrato.rg_representante} />
+            <Campo label="E-mail" value={contrato.email_contato} />
+            <Campo label="Endereço Postal" value={contrato.endereco_postal} />
           </div>
         </Cartao>
 
@@ -589,19 +477,11 @@ export default function PaginaDetalhesContrato({
           larguraTotal
         >
           <div className={styles.grupoCampos}>
-            {contrato.prorrogacao &&
-            contrato.prorrogacao.length > 0 ? (
+            {contrato.prorrogacao && contrato.prorrogacao.length > 0 ? (
               contrato.prorrogacao.map((item) => (
                 <React.Fragment key={item.id_prorrogacao}>
-                  <Campo
-                    label= "Novo Prazo"
-                    value={item.novo_prazo}
-                  />
-
-                  <Campo
-                    label= "Novo Valor"
-                    value={item.novo_valor}
-                  />
+                  <Campo label="Novo Prazo" value={item.novo_prazo} />
+                  <Campo label="Novo Valor" value={item.novo_valor} />
                 </React.Fragment>
               ))
             ) : (
@@ -617,19 +497,11 @@ export default function PaginaDetalhesContrato({
           larguraTotal
         >
           <div className={styles.grupoCampos}>
-            {contrato.pagamento &&
-            contrato.pagamento.length > 0 ? (
+            {contrato.pagamento && contrato.pagamento.length > 0 ? (
               contrato.pagamento.map((item) => (
                 <React.Fragment key={item.id_pagamento}>
-                  <Campo
-                    label="Descrição"
-                    value={item.descricao}
-                  />
-
-                  <Campo
-                    label= "Valor Pago"
-                    value={item.valor_pago}
-                  />
+                  <Campo label="Descrição" value={item.descricao} />
+                  <Campo label="Valor Pago" value={item.valor_pago} />
                 </React.Fragment>
               ))
             ) : (
@@ -645,34 +517,14 @@ export default function PaginaDetalhesContrato({
           larguraTotal
         >
           <div className={styles.grupoCampos}>
-            {contrato.notificacao &&
-            contrato.notificacao.length > 0 ? (
+            {contrato.notificacao && contrato.notificacao.length > 0 ? (
               contrato.notificacao.map((item) => (
                 <React.Fragment key={item.id_notificacao}>
-                  <Campo
-                    label= "Tipo de Notificação"
-                    value={item.tipo_notificacao?.tipo}
-                  />
-
-                  <Campo
-                    label= "Título"
-                    value={item.titulo}
-                  />
-
-                  <Campo
-                    label= "Descrição"
-                    value={item.descricao}
-                  />
-
-                  <Campo
-                    label= "Tempo de Envio"
-                    value={item.tempo_envio}
-                  />
-
-                  <Campo
-                    label= "Data de Criação"
-                    value={item.data_criacao}
-                  />
+                  <Campo label="Tipo de Notificação" value={item.tipo_notificacao?.tipo} />
+                  <Campo label="Título" value={item.titulo} />
+                  <Campo label="Descrição" value={item.descricao} />
+                  <Campo label="Tempo de Envio" value={item.tempo_envio} />
+                  <Campo label="Data de Criação" value={item.data_criacao} />
                 </React.Fragment>
               ))
             ) : (
@@ -681,7 +533,80 @@ export default function PaginaDetalhesContrato({
           </div>
         </Cartao>
 
-          <button className={styles.botaoSalvar}> Salvar Alterações </button>
+        {/* 12. COMENTÁRIOS DOS FISCAIS */}
+        <Cartao
+          titulo="Comentários e solicitações dos fiscais"
+          icone={<FileTextIcon size={25} />}
+          larguraTotal
+        >
+          {carregandoComentarios ? (
+            <p>Carregando comentários...</p>
+          ) : comentarios.length > 0 ? (
+            <div className={styles.listaComentarios}>
+              {comentarios.map((item) => (
+                <div
+                  key={item.id_comentario}
+                  className={styles.cardComentario}
+                >
+                  <div className={styles.topoComentario}>
+                    <strong>
+                      Solicitação #{item.id_comentario}
+                    </strong>
+
+                    <span
+                      className={
+                        item.status === "Resolvido"
+                          ? styles.statusResolvido
+                          : styles.statusPendente
+                      }
+                    >
+                      {item.status}
+                    </span>
+                  </div>
+
+                  <p className={styles.textoComentario}>
+                    {item.comentario}
+                  </p>
+
+                  <div className={styles.informacoesComentario}>
+                    <span>Fiscal: {item.pessoa?.nome || "Nome não disponível"}</span>
+
+                    <span>
+                      Enviado em:{" "}
+                      {new Date(item.data_criacao).toLocaleString("pt-BR")}
+                    </span>
+                  </div>
+
+                  {item.status === "Resolvido" && item.data_resolucao && (
+                    <p className={styles.dataResolucao}>
+                      Resolvido em:{" "}
+                      {new Date(item.data_resolucao).toLocaleString("pt-BR")}
+                    </p>
+                  )}
+
+                  {item.status !== "Resolvido" && (
+                    <button
+                      className={styles.botaoResolver}
+                      onClick={() => resolverComentario(item.id_comentario)}
+                      disabled={resolvendo === item.id_comentario}
+                    >
+                      {resolvendo === item.id_comentario
+                        ? "Confirmando..."
+                        : "Confirmar como resolvido"}
+                    </button>
+                  )}
+                </div>
+              ))}
+            </div>
+          ) : (
+            <p>Nenhum comentário registrado para este contrato.</p>
+          )}
+        </Cartao>
+
+        <button className={styles.botaoSalvar}>
+          Salvar Alterações
+        </button>
+
       </div>
     </main>
   );

@@ -139,6 +139,85 @@ body{
 .campoUnico {
     width: 100%;
 }
+.listaComentarios {
+  display: flex;
+  flex-direction: column;
+  gap: 18px;
+}
+
+.cardComentario {
+  background: #f8faf9;
+  border: 1px solid #dce8e4;
+  border-radius: 10px;
+  padding: 20px;
+}
+
+.topoComentario {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  gap: 12px;
+  margin-bottom: 15px;
+}
+
+.statusPendente,
+.statusResolvido {
+  padding: 6px 12px;
+  border-radius: 20px;
+  font-size: 13px;
+  font-weight: 600;
+}
+
+.statusPendente {
+  background: #fff1c7;
+  color: #946200;
+}
+
+.statusResolvido {
+  background: #d9f3e5;
+  color: #187344;
+}
+
+.textoComentario {
+  font-size: 15px;
+  color: #333;
+  margin-bottom: 15px;
+  line-height: 1.6;
+}
+
+.informacoesComentario {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 15px;
+  color: #777;
+  font-size: 13px;
+}
+
+.dataResolucao {
+  color: #187344;
+  font-size: 13px;
+  margin-top: 12px;
+}
+
+.botaoResolver {
+  margin-top: 18px;
+  padding: 10px 16px;
+  background: #006c5b;
+  color: white;
+  border: none;
+  border-radius: 7px;
+  cursor: pointer;
+  font-weight: 600;
+}
+
+.botaoResolver:hover {
+  background: #005346;
+}
+
+.botaoResolver:disabled {
+  opacity: 0.6;
+  cursor: not-allowed;
+}
 
 
 @media (max-width: 700px) {

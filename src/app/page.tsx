@@ -2,14 +2,45 @@
 
 import { useState } from "react";
 import Image from "next/image";
+import { useRouter } from "next/navigation";
+
 import styles from "./page.module.css";
+
 import { RiLockPasswordLine } from "react-icons/ri";
 import { MdOutlineAttachEmail } from "react-icons/md";
 import { FaRegEyeSlash, FaRegEye } from "react-icons/fa";
-import Link from "next/link"
+
+import { supabase } from "@/lib/supabase";
 
 export default function Home() {
+  const router = useRouter();
+
   const [mostrarSenha, setMostrarSenha] = useState(false);
+  const [email, setEmail] = useState("");
+  const [senha, setSenha] = useState("");
+  const [carregando, setCarregando] = useState(false);
+  const [erro, setErro] = useState("");
+
+  async function fazerLogin(e: React.FormEvent<HTMLFormElement>) {
+    e.preventDefault();
+
+    setErro("");
+    setCarregando(true);
+
+    const { error } = await supabase.auth.signInWithPassword({
+      email,
+      password: senha,
+    });
+
+    if (error) {
+      console.error("Erro no login:", error);
+      setErro("E-mail ou senha inválidos.");
+      setCarregando(false);
+      return;
+    }
+
+    router.push("/inicial");
+  }
 
   return (
     <main className={styles.container}>
@@ -29,7 +60,7 @@ export default function Home() {
           Sistema de Gerenciamento de Contratos do IFPB - Campus Esperança
         </p>
 
-        <form className={styles.form}>
+        <form className={styles.form} onSubmit={fazerLogin}>
           <label>E-mail</label>
 
           <div className={styles.inputContainer}>
@@ -38,30 +69,36 @@ export default function Home() {
             <input
               type="email"
               placeholder="seu.email@ifpb.edu.br"
+              value={email}
+              onChange={(e) => setEmail(e.target.value)}
+              required
             />
           </div>
 
-         <label>Senha</label>
+          <label>Senha</label>
 
-<div className={styles.inputContainer}>
-  <RiLockPasswordLine className={styles.icon} />
+          <div className={styles.inputContainer}>
+            <RiLockPasswordLine className={styles.icon} />
 
-  <input
-    type={mostrarSenha ? "text" : "password"}
-    placeholder="••••••••••••••••••"
-  />
+            <input
+              type={mostrarSenha ? "text" : "password"}
+              placeholder="••••••••••••••••••"
+              value={senha}
+              onChange={(e) => setSenha(e.target.value)}
+              required
+            />
 
-  <span
-    className={styles.eyeButton}
-    onClick={() => setMostrarSenha(!mostrarSenha)}
-  >
-    {mostrarSenha ? (
-      <FaRegEye className={styles.eyeIcon} />
-    ) : (
-      <FaRegEyeSlash className={styles.eyeIcon} />
-    )}
-  </span>
-</div>
+            <span
+              className={styles.eyeButton}
+              onClick={() => setMostrarSenha(!mostrarSenha)}
+            >
+              {mostrarSenha ? (
+                <FaRegEye className={styles.eyeIcon} />
+              ) : (
+                <FaRegEyeSlash className={styles.eyeIcon} />
+              )}
+            </span>
+          </div>
 
           <div className={styles.options}>
             <label>
@@ -72,9 +109,15 @@ export default function Home() {
             <a href="#">Esqueci minha senha</a>
           </div>
 
-          <Link href= "/inicial "type="submit" className={styles.loginButton}>
-            Entrar
-          </Link>
+          {erro && <p style={{ color: "red" }}>{erro}</p>}
+
+          <button
+            type="submit"
+            className={styles.loginButton}
+            disabled={carregando}
+          >
+            {carregando ? "Entrando..." : "Entrar"}
+          </button>
         </form>
       </div>
     </main>
