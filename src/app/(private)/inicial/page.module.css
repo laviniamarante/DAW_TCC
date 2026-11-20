@@ -27,16 +27,15 @@
 }
 
 .titulo {
-    font-size: 26px;
+    font-size: 22px;
     margin: 0;
     font-weight:bold;
 }
 
 .subtitulo {
     color: #555555;
-    font-size: 18px;
+    font-size: 15px;
     font-weight: 500;
-    margin: 0;
 }
 
 .botaoNovoContrato {
@@ -101,14 +100,14 @@
 }
 
 .tituloContrato {
-    font-size: 20px;
+    font-size: 18px;
     font-weight: bold;
     color: #006c5b;
     margin: 0;
 }
 
 .infoContrato {
-    font-size: 16px;
+    font-size: 14px;
     color: #4a5568;
     margin: 0;
 }
@@ -197,7 +196,7 @@
 }
 
 .nomeEmpresa {
-  font-size: 18px;
+  font-size: 16px;
   font-weight: 600;
 }
 

@@ -54,7 +54,7 @@ export default function NovoContrato() {
 
   return (
     <main className={styles.container}>
-      <Link href="/contratos" className={styles.botaoVoltar}>
+      <Link href="/inicial" className={styles.botaoVoltar}>
         <ArrowLeftIcon size={20} />
       </Link>
 

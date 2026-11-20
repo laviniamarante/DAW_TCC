@@ -1,103 +1,183 @@
+
+/* Área principal */
 .containerPrincipal {
-    max-width: 1000px;
-    margin: 24px auto;
-    padding: 0 16px 40px;
+  width: 100%;
+  min-height: 100vh;
+  padding: 25px;
+  background-color: #f5f5f5;
 }
 
+/* Título */
 .tituloPagina {
-    font-size: 1.5rem;
-    font-weight: 700;
-    color: #1a1a1a;
-    margin-bottom: 4px;
+  font-size: 25px;
+  font-weight: bold;
+  color: #006C5B;
+  margin-bottom: 5px;
 }
 
 .subtitulo {
-    font-size: 0.9rem;
-    color: #666;
-    margin-bottom: 20px;
+  font-size: 14px;
+  color: #777;
+  margin-bottom: 20px;
 }
 
-.vazio {
-    text-align: center;
-    color: #666;
-    padding: 30px;
+/* Filtros */
+.areaFiltros {
+  display: flex;
+  justify-content: space-around;
+  align-items: center;
+  gap: 15px;
+  margin: 20px 0 25px;
+  flex-wrap: wrap;
 }
 
+.botaoFiltro {
+  background-color: white;
+  color: #222;
+  border: none;
+  border-radius: 25px;
+  padding: 9px 18px;
+  font-size: 14px;
+  cursor: pointer;
+  transition: 0.2s;
+}
+
+.botaoFiltro:hover {
+  background-color: #e5eeeb;
+}
+
+.botaoFiltroSelecionado {
+  background-color: #006C5B;
+  color: white;
+  font-weight: bold;
+}
+
+/* Lista */
 .listaNotificacoes {
-    display: flex;
-    flex-direction: column;
-    gap: 12px;
+  display: flex;
+  flex-direction: column;
+  gap: 18px;
+  width: 100%;
 }
 
+/* Card */
 .itemNotificacao {
-    display: flex;
-    align-items: flex-start;
-    gap: 14px;
-    background: #ffffff;
-    border: 1px solid #e0e0e0;
-    border-left: 5px solid transparent;
-    border-radius: 8px;
-    padding: 16px 18px;
-    text-decoration: none;
-    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.02);
-    transition: transform 0.15s ease, box-shadow 0.15s ease;
+  display: flex;
+  align-items: flex-start;
+  gap: 15px;
+
+  width: 100%;
+  padding: 20px;
+
+  background-color: white;
+  border-radius: 10px;
+
+  text-decoration: none;
+  color: inherit;
+
+  transition: 0.2s;
 }
 
 .itemNotificacao:hover {
-    transform: translateY(-1px);
-    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.06);
+  box-shadow: 0 3px 10px rgba(0, 0, 0, 0.08);
+  transform: translateY(-2px);
+}
+
+/* Ícones */
+.iconeAlerta {
+  width: 45px;
+  height: 45px;
+  min-width: 45px;
+
+  border-radius: 50%;
+
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.iconeVerde {
+  background-color: #39c172;
+}
+
+.iconeAmarelo {
+  background-color: #f5ba18;
+}
+
+.iconeVermelho {
+  background-color: #e53935;
+}
+
+/* Informações do contrato */
+.conteudoNotificacao {
+  flex: 1;
+  min-width: 0;
 }
 
 .conteudoNotificacao h3 {
-    font-size: 1rem;
-    font-weight: 700;
-    color: #1a1a1a;
-    margin: 0 0 2px;
+  font-size: 14px;
+  font-weight: bold;
+  color: #006C5B;
+  margin: 0 0 5px;
 }
 
-.conteudoNotificacao p {
-    font-size: 0.88rem;
-    color: #555;
-    margin: 0 0 6px;
+.tituloCard {
+  font-size: 16px;
+  font-weight: bold;
+  color: #111;
+  margin: 0 0 7px;
 }
 
-.rotuloAlerta {
-    font-size: 0.8rem;
-    font-weight: 600;
+.tempoTexto {
+  display: block;
+  font-size: 13px;
+  color: #999;
+  margin-bottom: 7px;
 }
 
-.alertaVermelho {
-    border-left-color: #dc2626;
+.subtituloCard {
+  font-size: 13px;
+  color: #888;
+  margin: 0 0 5px;
 }
 
-.alertaVermelho .iconeAlerta {
-    color: #dc2626;
+.dataVencimento {
+  font-size: 13px;
+  color: #666;
+  margin: 0;
 }
 
-.alertaVermelho .rotuloAlerta {
-    color: #991b1b;
+/* Mensagens */
+.vazio {
+  text-align: center;
+  padding: 25px;
+  color: #666;
+  font-size: 15px;
 }
 
-.alertaAmarelo {
-    border-left-color: #d97706;
-}
+/* Responsividade */
+@media (max-width: 600px) {
+  .containerPrincipal {
+    padding: 15px;
+  }
 
-.alertaAmarelo .iconeAlerta {
-    color: #d97706;
-}
+  .areaFiltros {
+    gap: 10px;
+  }
 
-.alertaAmarelo .rotuloAlerta {
-    color: #92400e;
-}
+  .botaoFiltro {
+    padding: 8px 13px;
+    font-size: 12px;
+  }
 
-.alertaVerde {
-    border-left-color: #16a34a;
-}
+  .itemNotificacao {
+    padding: 15px;
+    gap: 10px;
+  }
 
-.alertaVerde .iconeAlerta {
-    color: #16a34a;
-}
-
-.alertaVerde .rotuloAlerta {
-    color: #166534;
+  .iconeAlerta {
+    width: 40px;
+    height: 40px;
+    min-width: 40px;
+  }
 }
