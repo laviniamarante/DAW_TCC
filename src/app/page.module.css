@@ -1,84 +1,181 @@
+
+/* TELA PRINCIPAL */
+
 .container {
-  min-height: 100vh;
   width: 100%;
-  background: #f5f5f5;
+  min-height: 100vh;
+  margin: 0;
+  padding: 0;
+  background: #fff;
+  box-sizing: border-box;
+}
+
+/* DIVISÃO DA TELA */
+
+.loginLayout {
+  display: grid;
+  grid-template-columns: 38% 58%;
+  width: 100%;
+  min-height: 100vh;
+  background: #fff;
+  overflow: hidden;
+}
+
+/* LADO VERDE */
+
+.painelVerde {
+  background: #006c5b;
+  color: #fff;
+
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+
+  padding: 48px 10%;
+  box-sizing: border-box;
+}
+
+/* LOGO E NOME */
+
+.brandLeft {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+}
+
+.logoContainer {
+  width: 40px;
+  height: 40px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background: rgba(255, 255, 255, 0.16);
+  border-radius: 10px;
+}
+
+.logo {
+  width: 30px;
+  height: 30px;
+  object-fit: contain;
+}
+
+.brandName {
+  font-size: 20px;
+  font-weight: 700;
+  color: #fff;
+}
+
+/* TEXTO CENTRAL */
+
+.welcomeContent {
+  margin: auto 0;
+  padding: 35px 0;
+}
+
+.welcomeTitle {
+  font-size: clamp(28px, 2.5vw, 36px);
+  font-weight: 700;
+  line-height: 1.25;
+  margin: 0 0 18px;
+  color: #fff;
+  text-align: left;
+}
+
+.welcomeSubtitle {
+  font-size: 15px;
+  line-height: 1.7;
+  margin: 0;
+  color: rgba(255, 255, 255, 0.9);
+}
+
+/* RODAPÉ VERDE */
+
+.campusFooter {
+  font-size: 13px;
+  color: rgba(255, 255, 255, 0.85);
+}
+
+/* LADO BRANCO */
+
+.painelBranco {
+  background: #fff;
 
   display: flex;
   justify-content: center;
   align-items: center;
 
-  padding: 20px;
+  padding: 55px 10%;
   box-sizing: border-box;
 }
 
-.card {
+.formContent {
   width: 100%;
-  max-width: 900px;
-
-  background: #fff;
-  padding: 25px 35px;
-
-  border: 1px solid #d9d9d9;
-  border-radius: 15px;
-  
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-
-  box-sizing: border-box;
+  max-width: 400px;
 }
 
-.logo {
-  width: 95px;
-  height: auto;
-  object-fit: contain;
-  margin-bottom: 8px;
+/* CABEÇALHO DO FORMULÁRIO */
+
+.formHeader {
+  margin-bottom: 34px;
 }
 
-.title {
+.loginTitle {
   color: #006c5b;
-  font-size: clamp(26px, 4vw, 34px);
+  text-align:left;
+  font-size: 29px;
   font-weight: 700;
-  margin: 0;
-  text-align: center;
+  margin: 0 0 8px;
 }
 
-.subtitle {
-  margin-top: 8px;
-  margin-bottom: 35px;
-  color: #555;
-  text-align: center;
-  font-size: clamp(13px, 2vw, 16px);
-  font-weight: 600;
-  line-height: 1.4;
+.loginSubtitle {
+  color: #888;
+  font-size: 14px;
+  line-height: 1.5;
+  margin: 0;
 }
+
+/* FORMULÁRIO */
 
 .form {
   width: 100%;
 }
 
-.form label {
+.form > label {
   display: block;
-  margin-bottom: 6px;
-  margin-top: 18px;
+  margin-bottom: 9px;
+  margin-top: 22px;
+
   font-weight: 600;
   font-size: 14px;
-  color: #555;
+  color: #333;
 }
+
+.form > label:first-child {
+  margin-top: 0;
+}
+
+/* CAMPOS */
 
 .inputContainer {
   display: flex;
   align-items: center;
   width: 100%;
+  height: 48px;
 
-  border: 1px solid #ccc;
-  border-radius: 12px;
+  border: 1px solid #d5d5d5;
+  border-radius: 9px;
   background: #fff;
 
-  padding: 0 12px;
-  margin-bottom: 8px;
+  padding: 0 13px;
+  margin-bottom: 0;
 
   box-sizing: border-box;
+  transition: border-color 0.2s ease, box-shadow 0.2s ease;
+}
+
+.inputContainer:focus-within {
+  border-color: #006c5b;
+  box-shadow: 0 0 0 3px rgba(0, 108, 91, 0.08);
 }
 
 .inputContainer input {
@@ -90,144 +187,232 @@
   background: transparent;
 
   padding: 12px;
-  font-size: 15px;
+  font-size: 14px;
+  color: #333;
 }
+
+.inputContainer input::placeholder {
+  color: #999;
+}
+
+/* ÍCONES */
 
 .icon {
   color: #006c5b;
-  font-size: 22px;
+  font-size: 19px;
   flex-shrink: 0;
 }
 
-.options {
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
-
-  width: 100%;
-
-  margin-top: 15px;
-  margin-bottom: 30px;
-
-  font-size: 14px;
-}
-
-.options label {
-  display: flex;
-  align-items: center;
-  gap: 6px;
-  margin: 0;
-
-  color: #555;
-}
-
-.options a {
-  color: #006c5b;
-  text-decoration: none;
-  font-weight: 600;
-}
-
-.options a:hover {
-  text-decoration: underline;
-}
-
-.form button,
-.loginButton {
-  width: 100%;
-  padding: 14px;
-  display:block;
-  border: none;
-  border-radius: 8px;
-  text-align: center;
-  background: #006c5b;
-  color: white;
-  text-decoration: none;
-  font-size: 16px;
-  font-weight: bold;
-  box-sizing: border-box;
-  cursor: pointer;
-  transition: background 0.2s ease;
-}
-
-.form button:hover,
-.loginButton:hover {
-  background: #005447;
-}
-
-.register {
-  margin-top: 20px;
-  text-align: center;
-}
-
-.register a {
-  color: #006c5b;
-  text-decoration: none;
-  font-weight: 600;
-}
+/* MOSTRAR E OCULTAR SENHA */
 
 .eyeButton {
   display: flex;
   align-items: center;
   justify-content: center;
 
+  border: none;
+  background: transparent;
   cursor: pointer;
+  padding: 5px;
   margin-left: 8px;
 }
 
 .eyeIcon {
-  color: #006c5b;
-  font-size: 20px;
+  color: #888;
+  font-size: 18px;
 }
 
 .eyeButton:hover .eyeIcon {
-  color: #005447;
+  color: #006c5b;
 }
 
-/* Telas médias */
-@media (max-width: 1000px) {
+/* OPÇÕES DO LOGIN */
 
-  .card {
-    max-width: 800px;
-    padding: 25px 30px;
-  }
+.options {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  gap: 12px;
 
+  width: 100%;
+  margin-top: 17px;
+  margin-bottom: 29px;
+
+  font-size: 15px;
 }
 
-
-/* Tablets */
-@media (max-width: 768px) {
-
-  .container {
-    padding: 15px;
-  }
-
-  .card {
-    max-width: 100%;
-    padding: 25px;
-  }
-
-  .logo {
-    width: 90px;
-  }
-
+.rememberLabel {
+  display: flex;
+  align-items: center;
+  gap: 7px;
+  font-size: 13px;
+  color: #444;
+  font-weight: 500;
+  cursor: pointer;
 }
 
+.rememberLabel input {
+  accent-color: #006c5b;
+  cursor: pointer;
+  width: 15px;
+  height: 15px;
+}
 
-/* Celulares */
-@media (max-width: 480px) {
+.forgotPassword {
+  color: #006c5b;
+  text-decoration: none;
+  font-weight: 600;
+  white-space: nowrap;
+}
 
-  .container {
-    padding: 10px;
+.forgotPassword:hover {
+  text-decoration: underline;
+}
+
+/* MENSAGEM DE ERRO */
+
+.errorMessage {
+  color: #d32f2f;
+  font-size: 14px;
+  margin: 0 0 15px;
+}
+
+/* BOTÃO ENTRAR */
+
+.loginButton {
+  width: 100%;
+  height: 49px;
+
+  display: block;
+  border: none;
+  border-radius: 8px;
+
+  text-align: center;
+  background: #006c5b;
+  color: white;
+
+  font-size: 15px;
+  font-weight: 700;
+
+  box-sizing: border-box;
+  cursor: pointer;
+  transition: background 0.2s ease;
+}
+
+.loginButton:hover {
+  background: #005447;
+}
+
+.loginButton:disabled {
+  opacity: 0.7;
+  cursor: not-allowed;
+}
+
+/* RODAPÉ DE SUPORTE */
+
+.supportFooter {
+  border-top: 1px solid #e5e5e5;
+  margin-top: 32px;
+  padding-top: 20px;
+
+  color: #888;
+  font-size: 12px;
+  line-height: 1.6;
+}
+
+/* TELAS MÉDIAS */
+
+@media (max-width: 900px) {
+  .loginLayout {
+    grid-template-columns: 40% 60%;
   }
 
-  .card {
-    padding: 20px 15px;
-    border-radius: 12px;
+  .painelVerde {
+    padding: 35px 8%;
+  }
+
+  .painelBranco {
+    padding: 40px 8%;
+  }
+
+  .welcomeTitle {
+    font-size: 28px;
+  }
+
+  .welcomeSubtitle {
+    font-size: 14px;
+  }
+}
+
+/* TABLETS E CELULARES */
+
+@media (max-width: 650px) {
+  .loginLayout {
+    display: flex;
+    flex-direction: column;
+    min-height: 100vh;
+  }
+
+  .painelVerde {
+    min-height: 260px;
+    padding: 28px 25px;
+  }
+
+  .welcomeContent {
+    padding: 25px 0;
+  }
+
+  .welcomeTitle {
+    font-size: 27px;
+  }
+
+  .welcomeSubtitle {
+    font-size: 13px;
+  }
+
+  .desktopBreak {
+    display: none;
+  }
+
+  .campusFooter {
+    font-size: 12px;
+  }
+
+  .painelBranco {
+    flex: 1;
+    padding: 45px 25px;
+  }
+
+  .formContent {
+    max-width: 440px;
+  }
+
+  .loginTitle {
+    font-size: 27px;
+  }
+
+  .formHeader {
+    margin-bottom: 30px;
+  }
+}
+
+/* CELULARES PEQUENOS */
+
+@media (max-width: 380px) {
+  .painelVerde {
+    min-height: 240px;
+    padding: 25px 20px;
+  }
+
+  .painelBranco {
+    padding: 35px 20px;
   }
 
   .options {
     flex-wrap: wrap;
-    gap: 10px;
   }
 
+  .supportFooter {
+    font-size: 11px;
+  }
 }
