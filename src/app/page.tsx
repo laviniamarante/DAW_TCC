@@ -2,13 +2,13 @@
 "use client";
 
 import { useState } from "react";
+import { MdOutlineAttachEmail, MdInfoOutline } from "react-icons/md";
 import Image from "next/image";
 import { useRouter } from "next/navigation";
 
 import styles from "./page.module.css";
 
 import { RiLockPasswordLine } from "react-icons/ri";
-import { MdOutlineAttachEmail } from "react-icons/md";
 import { FaRegEyeSlash, FaRegEye } from "react-icons/fa";
 
 import { supabase } from "@/lib/supabase";
@@ -170,9 +170,11 @@ export default function Home() {
 
             </form>
 
-            <div className={styles.supportFooter}>
-              Problemas para acessar? Procure a coordenação de TI do campus.
-            </div>
+           <div className={styles.supportFooter}>
+  <MdInfoOutline className={styles.supportIcon} />
+  <p>Problemas para acessar? Procure a coordenação de TI do campus.</p>
+</div>
+        
 
           </div>
 

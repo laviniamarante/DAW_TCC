@@ -24,14 +24,16 @@
 /* LADO VERDE */
 
 .painelVerde {
-  background: #006c5b;
+  background:
+    radial-gradient(900px 600px at 85% 0%, rgba(20, 148, 111, 0.55) 0%, transparent 60%),
+    linear-gradient(160deg, #00574a 0%, #00382f 100%);
   color: #fff;
 
   display: flex;
   flex-direction: column;
   justify-content: space-between;
 
-  padding: 48px 10%;
+  padding: 55px 10%;
   box-sizing: border-box;
 }
 
@@ -415,4 +417,31 @@
   .supportFooter {
     font-size: 11px;
   }
+}
+/* RODAPÉ DE SUPORTE */
+
+.supportFooter {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+
+  margin-top: 28px;
+  padding: 14px 16px;
+
+  background: #eef6f2;
+  border-radius: 12px;
+
+  color: #3e524b;
+  font-size: 13.5px;
+  line-height: 1.4;
+}
+
+.supportFooter p {
+  margin: 0;
+}
+
+.supportIcon {
+  color: #006c5b;
+  font-size: 22px;
+  flex-shrink: 0;
 }
