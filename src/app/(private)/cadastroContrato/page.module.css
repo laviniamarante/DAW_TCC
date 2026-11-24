@@ -13,30 +13,37 @@ body {
   font-size: 1rem;
 }
 
+.cabecalho {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  margin-bottom: 24px;
+}
+
 .botaoVoltar {
   display: inline-flex;
   align-items: center;
-  gap: 8px;
-  background-color: #006652;
-  color: #ffffff;
-  padding: 10px 14px;
-  border-radius: 6px;
-  font-weight: 600;
-  font-size: 1rem;
+  justify-content: center;
+  flex-shrink: 0;
+  width: 40px;
+  height: 40px;
+  padding: 0;
+  background-color: transparent;
+  color: #006652;
+  border: none;
+  border-radius: 50%;
   cursor: pointer;
   text-decoration: none;
-  margin-bottom: 16px;
-  transition: opacity 0.2s;
+  transition: background-color 0.2s ease, transform 0.2s ease;
 }
 
 .botaoVoltar:hover {
-  opacity: 0.9;
+  background-color: #e8f2f0;
+  transform: translateX(-2px);
 }
 
 .areaTitulo {
-  margin-bottom: 16px;
-  font-size: 1rem;
-  font-weight: bold;
+  margin-top: 12px;
 }
 
 .subtitulo {
@@ -165,5 +172,114 @@ body {
 
   .cartao {
     padding: 16px;
+  }
+}
+/* PRORROGAÇÕES E PAGAMENTOS */
+
+.listaRelacionados {
+  display: flex;
+  flex-direction: column;
+  gap: 24px; /* Espaço entre uma prorrogação e outra */
+}
+
+.itemRelacionado {
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+}
+
+.acoesProrrogacao {
+  display: flex;
+  justify-content: flex-start;
+  margin-top: 16px; /* Espaço entre a última prorrogação e o botão */
+}
+
+.botaoAdicionar {
+  background-color: #006c5b;
+  color: white;
+  border: none;
+  border-radius: 6px;
+  padding: 10px 16px;
+  font-size: 0.9rem;
+  font-weight: 600;
+  cursor: pointer;
+  transition: background-color 0.2s;
+}
+
+.botaoAdicionar:hover {
+  background-color: #005446;
+}
+
+.botaoRemover {
+  align-self: flex-start;
+  background-color: #fff;
+  color: #b33a3a;
+  border: 1px solid #e4bcbc;
+  border-radius: 6px;
+  padding: 8px 12px;
+  font-size: 0.85rem;
+  font-weight: 600;
+  cursor: pointer;
+  transition: background-color 0.2s;
+}
+
+.botaoRemover:hover {
+  background-color: #fff0f0;
+}
+
+/* PAGAMENTOS */
+
+.itemPagamento {
+  display: flex;
+  flex-direction: column;
+  gap: 14px;
+  padding: 18px;
+  background-color: #f8faf9;
+  border: 1px solid #e2eae7;
+  border-radius: 8px;
+  box-sizing: border-box;
+}
+
+.itemPagamento h4 {
+  margin: 0;
+  color: #006c5b;
+  font-size: 1rem;
+  font-weight: 700;
+  padding-bottom: 10px;
+  border-bottom: 1px solid #e2eae7;
+}
+
+/* BOTÃO SALVAR */
+
+.botaoSalvar {
+  background-color: #006652;
+  color: white;
+  padding: 12px 22px;
+  border: none;
+  border-radius: 7px;
+  font-weight: 600;
+  font-size: 0.95rem;
+  cursor: pointer;
+  margin-top: 16px;
+  transition: background-color 0.2s;
+}
+
+.botaoSalvar:hover {
+  background-color: #005446;
+}
+
+@media (max-width: 700px) {
+  .itemRelacionado,
+  .itemPagamento {
+    padding: 14px;
+  }
+
+  .acoesProrrogacao {
+    flex-direction: column;
+  }
+
+  .botaoAdicionar,
+  .botaoRemover {
+    width: 100%;
   }
 }

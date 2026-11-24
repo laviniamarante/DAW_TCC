@@ -317,12 +317,14 @@ export default function PaginaDetalhesContrato({
 
   /* CARREGAMENTO */
   if (carregando) {
-    return (
-      <main className={styles.containerNaoEncontrado}>
-        <h2>Carregando contrato...</h2>
-      </main>
-    );
-  }
+  return (
+    <main className={styles.containerNaoEncontrado}>
+      <p className={styles.mensagemCarregando}>
+        Carregando contrato...
+      </p>
+    </main>
+  );
+}
 
   if (!contrato) {
     return (

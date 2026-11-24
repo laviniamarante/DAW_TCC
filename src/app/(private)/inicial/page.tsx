@@ -97,27 +97,15 @@ useEffect(() => {
     }
   };
 
-  if (carregando) {
-    return (
-      <main className={styles.conteinerPrincipal}>
-        <div className={styles.linhaCabecalho}>
-          <div className={styles.grupoTitulo}>
-          </div>
-        </div>
-
-        <p
-          style={{
-            textAlign: "center",
-            color: "#666",
-            padding: "20px",
-          }}
-        >
-          Carregando contratos...
-          {/* exibir essa mensagem enquanto os contratos estão sendo carregados */}
-        </p>
-      </main>
-    );
-  }
+ if (carregando) {
+  return (
+    <main className={styles.conteinerPrincipal}>
+      <p className={styles.mensagemCarregando}>
+        Carregando contratos...
+      </p>
+    </main>
+  );
+}
 
   return (
     <main className={styles.conteinerPrincipal}>

@@ -7,27 +7,36 @@ body{
     padding: 0 16px;
 }
 .cabecalho {
-    padding: 2px;
-    font-size: 1rem;
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  margin-bottom: 24px;
 }
 
-.backBtn {
-    display: inline-flex;
-    align-items: center;
-    gap: 8px;
-    background-color: #006652;
-    padding: 10px 14px;
-    border-radius: 6px;
-    font-weight: 600;
-    font-size: 1rem;
-    cursor: pointer;
-    text-decoration: none;
-    margin-bottom: 16px;
-    transition: opacity 0.2s;
+.botaoVoltar {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  flex-shrink: 0;
+  width: 40px;
+  height: 40px;
+  padding: 0;
+  background-color: transparent;
+  color: #006652;
+  border: none;
+  border-radius: 50%;
+  cursor: pointer;
+  text-decoration: none;
+  transition: background-color 0.2s ease, transform 0.2s ease;
 }
 
-.backBtn:hover {
-    opacity: 0.9;
+.botaoVoltar:hover {
+  background-color: #e8f2f0;
+  transform: translateX(-2px);
+}
+
+.areaTitulo {
+  margin-top: 12px;
 }
 .gradeCartoes {
     display: flex;
@@ -254,4 +263,12 @@ body{
     font-size: 1rem;
     font-weight: 50;
     margin-bottom: 8px;
+}
+
+.mensagemCarregando {
+  font-size: 14px;
+  font-weight: 400;
+  color: #666;
+  text-align: center;
+  margin-top: 15px;
 }
