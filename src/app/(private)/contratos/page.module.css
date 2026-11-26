@@ -10,13 +10,14 @@
 .tituloPagina {
     font-size: 1.5rem;
     font-weight: 700;
-    margin-bottom: 16px;
-    color: #1a1a1a;
+    margin-bottom: 5px;
+    color: #114e45;
 }
 
-/* ==============================
-   PAINEL DE FILTRAGEM
-============================== */
+.subtitulo{
+    color: #073b33;
+    padding-bottom: 12px;
+}
 
 .cartaoFiltros {
     background: #ffffff;

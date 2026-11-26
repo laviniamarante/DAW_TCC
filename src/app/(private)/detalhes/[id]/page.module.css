@@ -37,6 +37,7 @@ body{
 
 .areaTitulo {
   margin-top: 12px;
+  color:#114e45;
 }
 .gradeCartoes {
     display: flex;
@@ -253,16 +254,11 @@ body{
     transition: opacity 0.2s;
 }
 
-.areaTitulo {
-    margin-bottom: 16px;
-    font-size: 1rem;
-    font-weight: bold;
-}
-
 .subtitulo {
     font-size: 1rem;
     font-weight: 50;
     margin-bottom: 8px;
+    color:#073b33;
 }
 
 .mensagemCarregando {

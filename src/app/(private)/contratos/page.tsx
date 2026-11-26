@@ -207,6 +207,8 @@ export default function PaginaContratos() {
   return (
     <main className={styles.containerPrincipal}>
       <h2 className={styles.tituloPagina}>Contratos</h2>
+      <p className={styles.subtitulo}> Acesse, pesquise e acompanhe os contratos para facilitar 
+        o gerenciamento e a consulta de informações. </p>
 
       {/* Painel de busca e filtragem */}
       <section className={styles.cartaoFiltros}>

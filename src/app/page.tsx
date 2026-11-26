@@ -11,7 +11,6 @@ import { RiLockPasswordLine } from "react-icons/ri";
 import { FaRegEyeSlash, FaRegEye } from "react-icons/fa";
 
 import { supabase } from "@/lib/supabase";
-
 export default function Home() {
   const router = useRouter();
 

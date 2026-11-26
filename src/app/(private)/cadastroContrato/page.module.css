@@ -44,12 +44,14 @@ body {
 
 .areaTitulo {
   margin-top: 12px;
+  color:#114e45;
 }
 
 .subtitulo {
   font-size: 1rem;
   font-weight: 50;
   margin-bottom: 8px;
+  color:#073b33;
 }
 
 .gradeCartoes {
