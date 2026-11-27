@@ -1,39 +1,26 @@
 
 "use client";
 
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import {
   UserCircle,
   MagnifyingGlass,
   UserPlus,
   X,
 } from "@phosphor-icons/react";
+import { supabase } from "@/lib/supabase";
 import estilos from "./page.module.css";
 
 interface Usuario {
-  id: number;
+  id_pessoa: number;
   nome: string;
   email: string;
 }
 
 export default function PaginaUsuarios() {
-  const [usuarios, setUsuarios] = useState<Usuario[]>([
-    {
-      id: 1,
-      nome: "Maria Silva",
-      email: "maria@ifpb.edu.br",
-    },
-    {
-      id: 2,
-      nome: "João Santos",
-      email: "joao@ifpb.edu.br",
-    },
-    {
-      id: 3,
-      nome: "Ana Oliveira",
-      email: "ana@ifpb.edu.br",
-    },
-  ]);
+  const [usuarios, setUsuarios] = useState<Usuario[]>([]);
+  const [carregando, setCarregando] = useState(true);
+  const [erro, setErro] = useState("");
 
   const [busca, setBusca] = useState("");
   const [modalAberto, setModalAberto] = useState(false);
@@ -41,28 +28,123 @@ export default function PaginaUsuarios() {
   const [email, setEmail] = useState("");
   const [senha, setSenha] = useState("");
 
+  useEffect(() => {
+    async function buscarUsuarios() {
+      try {
+        setCarregando(true);
+        setErro("");
+
+        const { data: sessao } = await supabase.auth.getSession();
+
+        const token = sessao.session?.access_token;
+
+        if (!token) {
+          setErro("Você precisa estar autenticado.");
+          return;
+        }
+
+        const resposta = await fetch("/api/usuarios", {
+          method: "GET",
+          headers: {
+            Authorization: `Bearer ${token}`,
+          },
+        });
+
+        const dados = await resposta.json();
+
+        if (!resposta.ok) {
+          throw new Error(dados.erro || "Erro ao buscar usuários.");
+        }
+
+        setUsuarios(dados);
+      } catch (error) {
+        setErro(
+          error instanceof Error
+            ? error.message
+            : "Erro ao buscar usuários."
+        );
+      } finally {
+        setCarregando(false);
+      }
+    }
+
+    buscarUsuarios();
+  }, []);
+
   const usuariosFiltrados = usuarios.filter((usuario) =>
     `${usuario.nome} ${usuario.email}`
       .toLowerCase()
       .includes(busca.toLowerCase())
   );
 
-  function cadastrarUsuario(e: React.FormEvent<HTMLFormElement>) {
-    e.preventDefault();
+  
+async function cadastrarUsuario(e: React.FormEvent<HTMLFormElement>) {
+  e.preventDefault();
 
-    const novoUsuario: Usuario = {
-      id: Date.now(),
-      nome,
-      email,
-    };
+  try {
+    setErro("");
 
-    setUsuarios([...usuarios, novoUsuario]);
+    // Obtém o token da sessão atual
+    const { data: sessao } = await supabase.auth.getSession();
+    const token = sessao.session?.access_token;
 
+    if (!token) {
+      throw new Error("Você precisa estar autenticado.");
+    }
+
+    // Envia os dados para a API
+    const resposta = await fetch("/api/usuarios", {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+        Authorization: `Bearer ${token}`,
+      },
+      body: JSON.stringify({
+        nome,
+        email,
+        senha,
+      }),
+    });
+
+    const dados = await resposta.json();
+
+    if (!resposta.ok) {
+      throw new Error(dados.erro || "Erro ao cadastrar usuário.");
+    }
+
+    // Atualiza a listagem buscando os dados do banco
+    const respostaLista = await fetch("/api/usuarios", {
+      method: "GET",
+      headers: {
+        Authorization: `Bearer ${token}`,
+      },
+    });
+
+    const usuariosAtualizados = await respostaLista.json();
+
+    if (!respostaLista.ok) {
+      throw new Error(
+        usuariosAtualizados.erro || "Usuário cadastrado, mas não foi possível atualizar a lista."
+      );
+    }
+
+    setUsuarios(usuariosAtualizados);
+
+    // Limpa os campos e fecha o modal
     setNome("");
     setEmail("");
     setSenha("");
     setModalAberto(false);
+
+  } catch (error) {
+    setErro(
+      error instanceof Error
+        ? error.message
+        : "Erro ao cadastrar usuário."
+    );
   }
+}
+
 
   return (
     <main className={estilos.containerPrincipal}>
@@ -107,47 +189,59 @@ export default function PaginaUsuarios() {
         </div>
 
         <div className={estilos.tabelaContainer}>
-          <table className={estilos.tabela}>
-            <thead>
-              <tr>
-                <th>Usuário</th>
-                <th>E-mail</th>
-                <th className={estilos.colunaAcao}>Ações</th>
-              </tr>
-            </thead>
+          {carregando && (
+            <p>Carregando usuários...</p>
+          )}
 
-            <tbody>
-              {usuariosFiltrados.map((usuario) => (
-                <tr key={usuario.id}>
-                  <td>
-                    <div className={estilos.usuarioTabela}>
-                      <UserCircle
-                        size={38}
-                        weight="regular"
-                        className={estilos.iconeUsuario}
-                      />
+          {erro && (
+            <p style={{ color: "red" }}>{erro}</p>
+          )}
 
-                      <span>{usuario.nome}</span>
-                    </div>
-                  </td>
+          {!carregando && !erro && (
+            <>
+              <table className={estilos.tabela}>
+                <thead>
+                  <tr>
+                    <th>Usuário</th>
+                    <th>E-mail</th>
+                    <th className={estilos.colunaAcao}>Ações</th>
+                  </tr>
+                </thead>
 
-                  <td>{usuario.email}</td>
+                <tbody>
+                  {usuariosFiltrados.map((usuario) => (
+                    <tr key={usuario.id_pessoa}>
+                      <td>
+                        <div className={estilos.usuarioTabela}>
+                          <UserCircle
+                            size={38}
+                            weight="regular"
+                            className={estilos.iconeUsuario}
+                          />
 
-                  <td className={estilos.colunaAcao}>
-                    <span className={estilos.acoesIndisponiveis}>
-                      —
-                    </span>
-                  </td>
-                </tr>
-              ))}
-            </tbody>
-          </table>
+                          <span>{usuario.nome}</span>
+                        </div>
+                      </td>
 
-          {usuariosFiltrados.length === 0 && (
-            <div className={estilos.mensagemVazia}>
-              <UserCircle size={42} />
-              <p>Nenhum usuário encontrado.</p>
-            </div>
+                      <td>{usuario.email}</td>
+
+                      <td className={estilos.colunaAcao}>
+                        <span className={estilos.acoesIndisponiveis}>
+                          —
+                        </span>
+                      </td>
+                    </tr>
+                  ))}
+                </tbody>
+              </table>
+
+              {usuariosFiltrados.length === 0 && (
+                <div className={estilos.mensagemVazia}>
+                  <UserCircle size={42} />
+                  <p>Nenhum usuário encontrado.</p>
+                </div>
+              )}
+            </>
           )}
         </div>
       </section>
