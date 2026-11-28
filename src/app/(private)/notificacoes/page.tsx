@@ -1,14 +1,21 @@
-
 "use client";
 
 import { useEffect, useState } from "react";
+import type { CSSProperties } from "react";
 import Link from "next/link";
-import { Bell, Warning, CheckCircle } from "@phosphor-icons/react";
+import { Warning, CheckCircle } from "@phosphor-icons/react";
 
 import { supabase } from "@/lib/supabase";
 import estilos from "./page.module.css";
 
 type Filtro = "todos" | "ativo" | "pendente" | "vencido";
+
+const FILTROS: { valor: Filtro; texto: string; cor: string }[] = [
+  { valor: "todos", texto: "Todos", cor: "#4b5563" },
+  { valor: "ativo", texto: "Ativos", cor: "#39c172" },
+  { valor: "pendente", texto: "Pendentes", cor: "#d97706" },
+  { valor: "vencido", texto: "Vencidos", cor: "#e53935" },
+];
 
 interface Notificacao {
   id_notificacao: number;
@@ -139,6 +146,16 @@ export default function PaginaNotificacoes() {
     return "ativo";
   }
 
+  // Quantidade de notificações por filtro.
+  const contagens: Record<Filtro, number> = {
+    todos: notificacoes.length,
+    ativo: notificacoes.filter((n) => descobrirTipo(n) === "ativo").length,
+    pendente: notificacoes.filter((n) => descobrirTipo(n) === "pendente")
+      .length,
+    vencido: notificacoes.filter((n) => descobrirTipo(n) === "vencido")
+      .length,
+  };
+
   // Aplica o filtro selecionado.
   const notificacoesFiltradas = notificacoes.filter((item) => {
     if (filtro === "todos") {
@@ -196,35 +213,39 @@ export default function PaginaNotificacoes() {
       </p>
 
       {/* Filtros */}
-      <div className={estilos.areaFiltros}>
-        {(
-          [
-            { valor: "todos", texto: "Todos" },
-            { valor: "ativo", texto: "Ativos" },
-            { valor: "pendente", texto: "Pendentes" },
-            { valor: "vencido", texto: "Vencidos" },
-          ] as { valor: Filtro; texto: string }[]
-        ).map((item) => (
-          <button
-            key={item.valor}
-            className={`${estilos.botaoFiltro} ${
-              filtro === item.valor
-                ? estilos.botaoFiltroSelecionado
-                : ""
-            }`}
-            onClick={() => setFiltro(item.valor)}
-          >
-            {item.texto}
-          </button>
-        ))}
+      <div
+        className={estilos.areaFiltros}
+        role="tablist"
+        aria-label="Filtrar notificações"
+      >
+        {FILTROS.map((item) => {
+          const selecionado = filtro === item.valor;
+
+          return (
+            <button
+              key={item.valor}
+              role="tab"
+              aria-selected={selecionado}
+              className={`${estilos.botaoFiltro} ${
+                selecionado ? estilos.botaoFiltroSelecionado : ""
+              }`}
+              style={{ "--cor": item.cor } as CSSProperties}
+              onClick={() => setFiltro(item.valor)}
+            >
+              <span className={estilos.pontoFiltro} aria-hidden="true" />
+              <span>{item.texto}</span>
+              <span className={estilos.contadorFiltro}>
+                {contagens[item.valor]}
+              </span>
+            </button>
+          );
+        })}
       </div>
 
       {/* Lista de notificações */}
       <section className={estilos.listaNotificacoes}>
         {notificacoesFiltradas.length === 0 ? (
-          <p className={estilos.vazio}>
-            Nenhuma notificação encontrada.
-          </p>
+          <p className={estilos.vazio}>Nenhuma notificação encontrada.</p>
         ) : (
           notificacoesFiltradas.map((notificacao) => {
             const tipo = descobrirTipo(notificacao);
@@ -235,11 +256,7 @@ export default function PaginaNotificacoes() {
             return (
               <Link
                 key={notificacao.id_notificacao}
-                href={
-                  contrato
-                    ? `/detalhes/${contrato.id_contrato}`
-                    : "#"
-                }
+                href={contrato ? `/detalhes/${contrato.id_contrato}` : "#"}
                 className={estilos.itemNotificacao}
               >
                 {/* Ícone */}
@@ -254,22 +271,17 @@ export default function PaginaNotificacoes() {
                       "Contrato não informado"}
                   </h3>
 
-                  <p className={estilos.tituloCard}>
-                    {notificacao.titulo}
-                  </p>
+                  <p className={estilos.tituloCard}>{notificacao.titulo}</p>
 
                   <span className={estilos.tempoTexto}>
                     {notificacao.tempo_envio !== null
                       ? `Enviar ${notificacao.tempo_envio} dias antes`
-                      : `Criado em ${formatarData(
-                          notificacao.data_criacao
-                        )}`}
+                      : `Criado em ${formatarData(notificacao.data_criacao)}`}
                   </span>
 
                   <p className={estilos.subtituloCard}>
                     Nome da contratada:{" "}
-                    {contrato?.empresa?.nome_contratada ||
-                      "Não informado"}
+                    {contrato?.empresa?.nome_contratada || "Não informado"}
                   </p>
 
                   <p className={estilos.dataVencimento}>
