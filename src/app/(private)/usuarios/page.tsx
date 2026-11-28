@@ -189,15 +189,12 @@ async function cadastrarUsuario(e: React.FormEvent<HTMLFormElement>) {
         </div>
 
         <div className={estilos.tabelaContainer}>
-          {carregando && (
-            <p>Carregando usuários...</p>
-          )}
 
           {erro && (
             <p style={{ color: "red" }}>{erro}</p>
           )}
 
-          {!carregando && !erro && (
+          {!erro && (
             <>
               <table className={estilos.tabela}>
                 <thead>
